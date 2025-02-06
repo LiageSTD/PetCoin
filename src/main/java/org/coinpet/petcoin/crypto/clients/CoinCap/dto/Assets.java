@@ -1,0 +1,57 @@
+package org.coinpet.petcoin.crypto.clients.CoinCap.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Getter
+@Setter
+public class Assets {
+
+    @JsonProperty("data")
+    List<Currency> currencyList;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Currency implements Serializable {
+        @JsonProperty("id")
+        // unique identifier for asset
+        String id;
+        @JsonProperty("rank")
+        // this number is directly associated with the marketcap whereas the highest marketcap receives rank 1
+        Integer rank;
+
+        @JsonProperty("symbol")
+        // most common symbol used to identify this asset on an exchange
+        String symbol;
+
+        @JsonProperty("name")
+        // proper name for asset
+        String name;
+
+        @JsonProperty("supply")
+        // available supply for trading
+        Float supply;
+
+        @JsonProperty("maxSupply")
+        // total quantity of asset issued
+        Float maxSupply;
+
+        @JsonProperty("marketCapUsd")
+        // supply x price
+        Float marketCapUsd;
+
+        @JsonProperty("volumeUsd24Hr")
+        //quantity of trading volume represented in USD over the last 24 hours
+        Float volumeUsd24Hr;
+
+        @JsonProperty("priceUsd")
+        // volume-weighted price based on real-time market data, translated to USD
+        Float priceUSD;
+    }
+}

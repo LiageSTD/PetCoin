@@ -1,2 +1,0 @@
-# PetCoin
-TODO
