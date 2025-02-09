@@ -2,7 +2,7 @@
 CREATE TABLE cryptocurrencies (
                                   id SERIAL PRIMARY KEY,
                                   symbol VARCHAR(10) NOT NULL UNIQUE,
-                                  name VARCHAR(100) NOT NULL,
+                                  name VARCHAR(100) NOT NULL UNIQUE,
                                   description TEXT,
                                   rank INTEGER
 );

@@ -1,9 +1,6 @@
 package org.coinpet.petcoin.repository.jooq;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 import org.coinpet.petcoin.repository.CoinRepository;
@@ -18,9 +15,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jooq.impl.DSL.multiset;
-import static org.jooq.impl.DSL.select;
-
 @Slf4j
 @Repository
 @AllArgsConstructor
@@ -32,15 +26,14 @@ public class JooqCoinRepository implements CoinRepository {
     public void addNewCurrency(Assets.Currency currency) {
         log.info("Adding new currency: {}", currency.getName());
 
-        Integer newID = dsl.insertInto(Tables.CRYPTOCURRENCIES)
-                .set(Tables.CRYPTOCURRENCIES.ID, Integer.parseInt(currency.getId()))
+        dsl.insertInto(Tables.CRYPTOCURRENCIES)
+//                .set(Tables.CRYPTOCURRENCIES.ID, Integer.parseInt(currency.getId()))
                 .set(Tables.CRYPTOCURRENCIES.NAME, currency.getName())
                 .set(Tables.CRYPTOCURRENCIES.SYMBOL, currency.getSymbol())
                 .set(Tables.CRYPTOCURRENCIES.RANK, currency.getRank())
-                .returning(Tables.CRYPTOCURRENCIES.ID)
                 .execute();
-
-        dsl.insertInto(Tables.MARKET_DATA)
+        Integer newID = dsl.lastID().intValue();
+                dsl.insertInto(Tables.MARKET_DATA)
                 .set(Tables.MARKET_DATA.CRYPTO_ID, newID)
                 .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now())
                 .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
@@ -51,9 +44,14 @@ public class JooqCoinRepository implements CoinRepository {
                 .execute();
     }
 
+    @Transactional
     @Override
     public void updateCurrency(Assets.Currency currency) {
         Integer id = findCurrencyIDBySymbol(currency.getSymbol());
+        if (id == null) {
+            addNewCurrency(currency);
+            return;
+        }
         dsl.update(Tables.MARKET_DATA)
                 .set(Tables.MARKET_DATA.CRYPTO_ID, id)
                 .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now())
@@ -75,7 +73,7 @@ public class JooqCoinRepository implements CoinRepository {
 
             if (cryptoId == null) {
                 addNewCurrency(currency);
-                cryptoId = findCurrencyIDBySymbol(currency.getSymbol());
+                continue;
             }
 
             Query updateQuery = dsl.update(Tables.MARKET_DATA)
@@ -117,6 +115,7 @@ public class JooqCoinRepository implements CoinRepository {
                 ).from(Tables.CRYPTOCURRENCIES)
                 .join(Tables.MARKET_DATA)
                 .on(Tables.CRYPTOCURRENCIES.ID.eq(Tables.MARKET_DATA.CRYPTO_ID))
+                .where(Tables.CRYPTOCURRENCIES.NAME.eq(name))
                 .fetchOneInto(Assets.Currency.class);
     }
 
