@@ -106,9 +106,11 @@ class JooqCoinRepositoryTest extends IntegrationTest {
         );
 
         coinRepository.updateCurrency(updatedData);
-
         Assets.Currency reply = coinRepository.findCurrencyByName(updatedData.getName());
+        System.out.println(reply);
+        System.out.println(updatedData);
         updatedData.setId(reply.getId());
+
         assertEquals(updatedData, reply);
     }
 
