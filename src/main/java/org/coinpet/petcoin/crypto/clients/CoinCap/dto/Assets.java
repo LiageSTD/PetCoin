@@ -1,6 +1,9 @@
 package org.coinpet.petcoin.crypto.clients.CoinCap.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import lombok.*;
 
 import java.io.Serializable;
@@ -8,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Assets {
 
     @JsonProperty("data")
@@ -35,23 +39,28 @@ public class Assets {
         String name;
 
         @JsonProperty("supply")
+        @JsonSetter(nulls = Nulls.SKIP)
         // available supply for trading
-        Float supply;
+        Float supply = (float) 0.00;
 
         @JsonProperty("maxSupply")
+        @JsonSetter(nulls = Nulls.SKIP)
         // total quantity of asset issued
-        Float maxSupply;
+        Float maxSupply = (float) 0.00;
 
         @JsonProperty("marketCapUsd")
+        @JsonSetter(nulls = Nulls.SKIP)
         // supply x price
-        Float marketCapUsd;
+        Float marketCapUsd = (float) 0.00;
 
         @JsonProperty("volumeUsd24Hr")
+        @JsonSetter(nulls = Nulls.SKIP)
         //quantity of trading volume represented in USD over the last 24 hours
-        Float volumeUsd24Hr;
+        Float volumeUsd24Hr = (float) 0.00;
 
         @JsonProperty("priceUsd")
+        @JsonSetter(nulls = Nulls.SKIP)
         // volume-weighted price based on real-time market data, translated to USD
-        Float priceUSD;
+        Float priceUSD = (float) 0.00;
     }
 }

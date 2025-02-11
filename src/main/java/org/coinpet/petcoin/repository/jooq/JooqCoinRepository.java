@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class JooqCoinRepository implements CoinRepository {
         log.info("Adding new currency: {}", currency.getName());
 
         dsl.insertInto(Tables.CRYPTOCURRENCIES)
-//                .set(Tables.CRYPTOCURRENCIES.ID, Integer.parseInt(currency.getId()))
                 .set(Tables.CRYPTOCURRENCIES.NAME, currency.getName())
                 .set(Tables.CRYPTOCURRENCIES.SYMBOL, currency.getSymbol())
                 .set(Tables.CRYPTOCURRENCIES.RANK, currency.getRank())
@@ -35,7 +35,7 @@ public class JooqCoinRepository implements CoinRepository {
         Integer newID = dsl.lastID().intValue();
                 dsl.insertInto(Tables.MARKET_DATA)
                 .set(Tables.MARKET_DATA.CRYPTO_ID, newID)
-                .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now())
+                .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now(ZoneId.of("UTC+3")))
                 .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
                 .set(Tables.MARKET_DATA.SUPPLY, BigDecimal.valueOf(currency.getSupply()))
                 .set(Tables.MARKET_DATA.MAX_SUPPLY, BigDecimal.valueOf(currency.getMaxSupply()))
@@ -52,7 +52,7 @@ public class JooqCoinRepository implements CoinRepository {
             addNewCurrency(currency);
             return;
         }
-        dsl.update(Tables.MARKET_DATA)
+        dsl.insertInto(Tables.MARKET_DATA)
                 .set(Tables.MARKET_DATA.CRYPTO_ID, id)
                 .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now())
                 .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
@@ -60,7 +60,15 @@ public class JooqCoinRepository implements CoinRepository {
                 .set(Tables.MARKET_DATA.MAX_SUPPLY, BigDecimal.valueOf(currency.getMaxSupply()))
                 .set(Tables.MARKET_DATA.VOLUME_USD, BigDecimal.valueOf(currency.getVolumeUsd24Hr()))
                 .set(Tables.MARKET_DATA.MARKET_CAP, BigDecimal.valueOf(currency.getMarketCapUsd()))
+                .onConflict(Tables.MARKET_DATA.CRYPTO_ID, Tables.MARKET_DATA.TIMESTAMP)
+                .doUpdate()
+                .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
+                .set(Tables.MARKET_DATA.SUPPLY, BigDecimal.valueOf(currency.getSupply()))
+                .set(Tables.MARKET_DATA.MAX_SUPPLY, BigDecimal.valueOf(currency.getMaxSupply()))
+                .set(Tables.MARKET_DATA.VOLUME_USD, BigDecimal.valueOf(currency.getVolumeUsd24Hr()))
+                .set(Tables.MARKET_DATA.MARKET_CAP, BigDecimal.valueOf(currency.getMarketCapUsd()))
                 .execute();
+
     }
 
     @Transactional
@@ -76,9 +84,16 @@ public class JooqCoinRepository implements CoinRepository {
                 continue;
             }
 
-            Query updateQuery = dsl.update(Tables.MARKET_DATA)
+            Query updateQuery = dsl.insertInto(Tables.MARKET_DATA)
                     .set(Tables.MARKET_DATA.CRYPTO_ID, cryptoId)
                     .set(Tables.MARKET_DATA.TIMESTAMP, LocalDateTime.now())
+                    .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
+                    .set(Tables.MARKET_DATA.SUPPLY, BigDecimal.valueOf(currency.getSupply()))
+                    .set(Tables.MARKET_DATA.MAX_SUPPLY, BigDecimal.valueOf(currency.getMaxSupply()))
+                    .set(Tables.MARKET_DATA.VOLUME_USD, BigDecimal.valueOf(currency.getVolumeUsd24Hr()))
+                    .set(Tables.MARKET_DATA.MARKET_CAP, BigDecimal.valueOf(currency.getMarketCapUsd()))
+                    .onConflict(Tables.MARKET_DATA.CRYPTO_ID, Tables.MARKET_DATA.TIMESTAMP)
+                    .doUpdate()
                     .set(Tables.MARKET_DATA.PRICE, BigDecimal.valueOf(currency.getPriceUSD()))
                     .set(Tables.MARKET_DATA.SUPPLY, BigDecimal.valueOf(currency.getSupply()))
                     .set(Tables.MARKET_DATA.MAX_SUPPLY, BigDecimal.valueOf(currency.getMaxSupply()))
@@ -116,6 +131,8 @@ public class JooqCoinRepository implements CoinRepository {
                 .join(Tables.MARKET_DATA)
                 .on(Tables.CRYPTOCURRENCIES.ID.eq(Tables.MARKET_DATA.CRYPTO_ID))
                 .where(Tables.CRYPTOCURRENCIES.NAME.eq(name))
+                .orderBy(Tables.MARKET_DATA.TIMESTAMP.desc())
+                .limit(1)
                 .fetchOneInto(Assets.Currency.class);
     }
 

@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.coinpet.petcoin.crypto.clients.CoinCap.CoinCapClient;
 import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 import org.coinpet.petcoin.repository.CoinRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +25,9 @@ public class CurrencyUpdaterService implements CurrencyUpdater {
 
     @Override
     public void updateAllAvailableCurrencies() {
-        Assets assets = coinCapClient.getAvailableCurrencies();
+        log.info("Getting all available currencies ${}", LocalDateTime.now());
+        Assets assets = coinCapClient.getAvailableCurrencies(2000);
         coinRepository.updateAssets(assets);
+        log.info("All available currencies updated ${}", LocalDateTime.now());
     }
 }
