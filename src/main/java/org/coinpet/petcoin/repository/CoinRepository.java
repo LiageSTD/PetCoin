@@ -13,4 +13,6 @@ public interface CoinRepository {
     void deleteCurrencyByName(String name);
 
     Assets.Currency findCurrencyByName(String name);
+
+    Integer getCurrencyIdByName(String name);
 }
