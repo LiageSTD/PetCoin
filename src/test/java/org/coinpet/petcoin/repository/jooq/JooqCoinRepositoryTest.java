@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource(properties = "app.scheduler.enabled=false")
@@ -82,7 +81,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         assertEquals(testData, reply);
 
-        coinRepository.updateCurrency(updatedData);
+        assertTrue(coinRepository.updateCurrency(updatedData));
 
         Assets.Currency secondReply = coinRepository.findCurrencyByName(updatedData.getName());
 

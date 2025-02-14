@@ -6,7 +6,7 @@ public interface CoinRepository {
 
     void addNewCurrency(Assets.Currency currency);
 
-    void updateCurrency(Assets.Currency currency);
+    boolean updateCurrency(Assets.Currency currency);
 
     void updateAssets(Assets assets);
 

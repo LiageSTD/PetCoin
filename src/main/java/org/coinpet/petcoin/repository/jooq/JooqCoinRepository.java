@@ -46,11 +46,11 @@ public class JooqCoinRepository implements CoinRepository {
 
     @Transactional
     @Override
-    public void updateCurrency(Assets.Currency currency) {
+    public boolean updateCurrency(Assets.Currency currency) {
         Integer id = findCurrencyIDBySymbol(currency.getSymbol());
         if (id == null) {
             addNewCurrency(currency);
-            return;
+            return false;
         }
         dsl.insertInto(Tables.MARKET_DATA)
                 .set(Tables.MARKET_DATA.CRYPTO_ID, id)
@@ -68,7 +68,7 @@ public class JooqCoinRepository implements CoinRepository {
                 .set(Tables.MARKET_DATA.VOLUME_USD, BigDecimal.valueOf(currency.getVolumeUsd24Hr()))
                 .set(Tables.MARKET_DATA.MARKET_CAP, BigDecimal.valueOf(currency.getMarketCapUsd()))
                 .execute();
-
+        return true;
     }
 
     @Transactional
