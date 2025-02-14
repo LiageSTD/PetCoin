@@ -105,6 +105,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
     @Rollback
     @Transactional
     void unsubscribeUserTest() {
+        userRepository.addUser(testUser1);
         coinRepository.addNewCurrency(new Assets.Currency(
                 "1",
                 1,
@@ -121,7 +122,13 @@ class JooqUserRepositoryTest extends IntegrationTest {
                 "Bitcoin",
                 BigDecimal.ONE,
                 "telegram");
-        userRepository.subscribeUser(subscriptionDTO);
+
+        assertTrue(userRepository.subscribeUser(subscriptionDTO));
+
+        List<SubscriptionDTO> shouldBeDescription = userRepository.getUserSubscriptions(subscriptionDTO.getTelegramId());
+
+        assertFalse(shouldBeDescription.isEmpty());
+
         userRepository.unsubscribeUser(subscriptionDTO);
 
         List<SubscriptionDTO> subscriptions = userRepository.getUserSubscriptions(subscriptionDTO.getTelegramId());

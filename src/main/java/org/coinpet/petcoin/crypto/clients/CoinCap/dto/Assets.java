@@ -62,5 +62,6 @@ public class Assets {
         @JsonSetter(nulls = Nulls.SKIP)
         // volume-weighted price based on real-time market data, translated to USD
         Float priceUSD = (float) 0.00;
+
     }
 }
