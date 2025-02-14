@@ -87,7 +87,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         updatedData.setId(secondReply.getId());
 
-        assertEquals(updatedData, reply);
+        assertEquals(updatedData, secondReply);
     }
 
     @Test
