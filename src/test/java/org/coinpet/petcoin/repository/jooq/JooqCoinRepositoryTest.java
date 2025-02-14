@@ -76,7 +76,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         coinRepository.addNewCurrency(testData);
 
-        Assets.Currency reply = coinRepository.findCurrencyByName(updatedData.getName());
+        Assets.Currency reply = coinRepository.findCurrencyByName(testData.getName());
 
         testData.setId(reply.getId());
 
@@ -84,9 +84,9 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         coinRepository.updateCurrency(updatedData);
 
-        reply = coinRepository.findCurrencyByName(updatedData.getName());
+        Assets.Currency secondReply = coinRepository.findCurrencyByName(updatedData.getName());
 
-        updatedData.setId(reply.getId());
+        updatedData.setId(secondReply.getId());
 
         assertEquals(updatedData, reply);
     }
