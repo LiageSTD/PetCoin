@@ -156,7 +156,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
     @Test
     @Transactional
     @Rollback
-    void deleteCurrencyByNameTest() {
+    void deleteCurrencyBySymbolTest() {
         Assets.Currency testData = new Assets.Currency(
                 "1",
                 1,
@@ -169,7 +169,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
                 (float) 200
         );
         coinRepository.addNewCurrency(testData);
-        coinRepository.deleteCurrencyByName(testData.getSymbol());
+        coinRepository.deleteCurrencyBySymbol(testData.getSymbol());
         Assets.Currency reply = coinRepository.findCurrencyBySymbol(testData.getSymbol());
 
 

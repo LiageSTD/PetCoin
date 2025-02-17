@@ -108,9 +108,9 @@ public class JooqCoinRepository implements CoinRepository {
     }
 
     @Override
-    public void deleteCurrencyByName(String name) {
+    public void deleteCurrencyBySymbol(String symbol) {
         dsl.delete(Tables.CRYPTOCURRENCIES)
-                .where(Tables.CRYPTOCURRENCIES.NAME.eq(name))
+                .where(Tables.CRYPTOCURRENCIES.SYMBOL.eq(symbol))
                 .execute();
     }
 
