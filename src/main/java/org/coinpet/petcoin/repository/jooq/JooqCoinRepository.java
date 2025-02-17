@@ -115,7 +115,7 @@ public class JooqCoinRepository implements CoinRepository {
     }
 
     @Override
-    public Assets.Currency findCurrencyByName(String name) {
+    public Assets.Currency findCurrencyBySymbol(String symbol) {
         return dsl.select(
                         Tables.CRYPTOCURRENCIES.ID,
                         Tables.CRYPTOCURRENCIES.NAME,
@@ -130,7 +130,7 @@ public class JooqCoinRepository implements CoinRepository {
                 ).from(Tables.CRYPTOCURRENCIES)
                 .join(Tables.MARKET_DATA)
                 .on(Tables.CRYPTOCURRENCIES.ID.eq(Tables.MARKET_DATA.CRYPTO_ID))
-                .where(Tables.CRYPTOCURRENCIES.NAME.eq(name))
+                .where(Tables.CRYPTOCURRENCIES.SYMBOL.eq(symbol))
                 .orderBy(Tables.MARKET_DATA.TIMESTAMP.desc())
                 .limit(1)
                 .fetchOneInto(Assets.Currency.class);

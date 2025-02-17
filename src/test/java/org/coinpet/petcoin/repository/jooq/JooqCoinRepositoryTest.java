@@ -39,7 +39,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
         );
         coinRepository.addNewCurrency(testData);
 
-        Assets.Currency reply = coinRepository.findCurrencyByName(testData.getName());
+        Assets.Currency reply = coinRepository.findCurrencyBySymbol(testData.getSymbol());
 
         testData.setId(reply.getId());
 
@@ -75,7 +75,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         coinRepository.addNewCurrency(testData);
 
-        Assets.Currency reply = coinRepository.findCurrencyByName(testData.getName());
+        Assets.Currency reply = coinRepository.findCurrencyBySymbol(testData.getSymbol());
 
         testData.setId(reply.getId());
 
@@ -83,7 +83,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
         assertTrue(coinRepository.updateCurrency(updatedData));
 
-        Assets.Currency secondReply = coinRepository.findCurrencyByName(updatedData.getName());
+        Assets.Currency secondReply = coinRepository.findCurrencyBySymbol(updatedData.getSymbol());
 
         updatedData.setId(secondReply.getId());
 
@@ -107,7 +107,7 @@ class JooqCoinRepositoryTest extends IntegrationTest {
         );
 
         coinRepository.updateCurrency(updatedData);
-        Assets.Currency reply = coinRepository.findCurrencyByName(updatedData.getName());
+        Assets.Currency reply = coinRepository.findCurrencyBySymbol(updatedData.getSymbol());
         log.debug(reply.toString());
         updatedData.setId(reply.getId());
         log.debug(updatedData.toString());
@@ -146,9 +146,9 @@ class JooqCoinRepositoryTest extends IntegrationTest {
         ));
 
         coinRepository.updateAssets(assets);
-        Assets.Currency a = coinRepository.findCurrencyByName("Bitcoin");
+        Assets.Currency a = coinRepository.findCurrencyBySymbol("Bitcoin");
         for (Assets.Currency currency : assets.getCurrencyList()) {
-            Assets.Currency reply = coinRepository.findCurrencyByName(currency.getName());
+            Assets.Currency reply = coinRepository.findCurrencyBySymbol(currency.getSymbol());
             assertEquals(currency, reply);
         }
     }
@@ -169,8 +169,8 @@ class JooqCoinRepositoryTest extends IntegrationTest {
                 (float) 200
         );
         coinRepository.addNewCurrency(testData);
-        coinRepository.deleteCurrencyByName(testData.getName());
-        Assets.Currency reply = coinRepository.findCurrencyByName(testData.getName());
+        coinRepository.deleteCurrencyByName(testData.getSymbol());
+        Assets.Currency reply = coinRepository.findCurrencyBySymbol(testData.getSymbol());
 
 
         assertNull(reply);
