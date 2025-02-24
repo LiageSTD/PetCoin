@@ -3,6 +3,7 @@ package org.coinpet.petcoin.repository.jooq;
 import lombok.extern.slf4j.Slf4j;
 import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 import org.coinpet.petcoin.repository.CoinRepository;
+import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestPropertySource(properties = "app.scheduler.enabled=false")
 @Slf4j
-class JooqCoinRepositoryTest {
+class JooqCoinRepositoryTest extends IntegrationTest {
     @Autowired
     CoinRepository coinRepository;
 
