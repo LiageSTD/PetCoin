@@ -40,7 +40,7 @@ public class UserController {
     void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
         userService.unsubscribeUser(subscriptionDTO);
     }
-    @GetMapping("/{telegram_id}")
+    @GetMapping("/subscriptions/{telegram_id}")
     List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id) {
         return userService.getUserSubscriptions(telegram_id);
     }

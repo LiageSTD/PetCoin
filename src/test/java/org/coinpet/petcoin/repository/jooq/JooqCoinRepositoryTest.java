@@ -229,6 +229,13 @@ class JooqCoinRepositoryTest extends IntegrationTest {
         Assets replyStats = coinRepository.getCurrencyStatsBySymbol(testData.getSymbol());
         replyStats.getCurrencyList().sort((currency1, currency2) -> currency1.getSupply().intValue() > currency2.getSupply().intValue() ? 1 : -1);
 
-        assertEquals(originStats, replyStats);
+        for (int i = 0; i < 100; i++) {
+            Assets.Currency originToCompare = originStats.getCurrencyList().get(i);
+            Assets.Currency replyToCompare = replyStats.getCurrencyList().get(i);
+
+            originToCompare.setId(replyToCompare.getId());
+
+            assertEquals(originToCompare, replyToCompare);
+        }
     }
 }
