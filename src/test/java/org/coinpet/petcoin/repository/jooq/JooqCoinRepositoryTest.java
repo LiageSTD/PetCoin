@@ -1,5 +1,6 @@
 package org.coinpet.petcoin.repository.jooq;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 import org.coinpet.petcoin.repository.CoinRepository;
@@ -11,7 +12,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -173,5 +176,59 @@ class JooqCoinRepositoryTest extends IntegrationTest {
 
 
         assertNull(reply);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    @SneakyThrows
+    void getCurrencyStatsBySymbol() {
+
+        Assets.Currency testData = new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                (float) 0.11,
+                (float) 100.01,
+                (float) 100000.11,
+                (float) 12300123.01,
+                (float) 200
+        );
+        Assets.Currency updatedData = new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                (float) 0.20,
+                (float) 102.03,
+                (float) 100231.23,
+                (float) 12123123123.02,
+                (float) 100
+        );
+        Assets originStats = new Assets(new ArrayList<>());
+
+        for (int i = 0; i < 100; i++) {
+            Assets.Currency toAdd = new Assets.Currency(
+                    "1",
+                    1,
+                    "BTC",
+                    "Bitcoin",
+                    (float) 0.20 + i,
+                    (float) 102.03 + i,
+                    (float) 100231.23 + i,
+                    (float) 121123123123.02 + i,
+                    (float) 100 + i
+            );
+            TimeUnit.MILLISECONDS.sleep(100);
+            originStats.getCurrencyList().add(toAdd);
+
+            coinRepository.updateCurrency(toAdd);
+        }
+
+        Assets replyStats = coinRepository.getCurrencyStatsBySymbol(testData.getSymbol());
+        replyStats.getCurrencyList().sort((currency1, currency2) -> currency1.getSupply().intValue() > currency2.getSupply().intValue() ? 1 : -1);
+
+        assertEquals(originStats, replyStats);
     }
 }

@@ -1,0 +1,47 @@
+package org.coinpet.petcoin.crypto.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.coinpet.petcoin.crypto.service.userService.UserService;
+import org.coinpet.petcoin.repository.dto.SubscriptionDTO;
+import org.coinpet.petcoin.repository.dto.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/user/v1")
+@RequiredArgsConstructor
+public class UserController {
+    UserService userService;
+
+    @PostMapping("/register_user")
+    @ResponseStatus(HttpStatus.CREATED)
+    void registerUser(@RequestBody UserDTO user) {
+        userService.addUser(user);
+    }
+
+    @DeleteMapping("/{telegram_id}")
+    void unregisterUser(@PathVariable long telegram_id) {
+        userService.deleteUser(telegram_id);
+    }
+
+    @GetMapping("/{telegram_id}")
+    boolean checkIfUserIsRegistered(@PathVariable long telegram_id) {
+        return userService.findUserById(telegram_id);
+    }
+
+    @PostMapping("/subscriptions")
+    void subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
+        userService.subscribeUser(subscriptionDTO);
+    }
+
+    @DeleteMapping("/subscriptions")
+    void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
+        userService.unsubscribeUser(subscriptionDTO);
+    }
+    @GetMapping("/{telegram_id}")
+    List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id) {
+        return userService.getUserSubscriptions(telegram_id);
+    }
+}

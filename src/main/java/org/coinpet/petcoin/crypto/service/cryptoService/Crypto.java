@@ -1,7 +1,10 @@
 package org.coinpet.petcoin.crypto.service.cryptoService;
 
-public interface Crypto {
-    void updateAllCurrencies();
+import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 
-    void updateCurrency(String currency);
+public interface Crypto {
+    Assets.Currency getCurrencyInfoBySymbol(String symbol);
+
+    Assets getCurrencyStatsBySymbol(String symbol);
+
 }

@@ -11,7 +11,10 @@ import java.util.List;
 
 @Getter
 @Setter
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Assets {
 
     @JsonProperty("data")

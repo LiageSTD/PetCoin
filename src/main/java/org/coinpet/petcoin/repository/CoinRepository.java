@@ -15,4 +15,6 @@ public interface CoinRepository {
     Assets.Currency findCurrencyBySymbol(String name);
 
     Integer getCurrencyIdByName(String name);
+
+    Assets getCurrencyStatsBySymbol(String symbol);
 }

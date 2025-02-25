@@ -144,6 +144,29 @@ public class JooqCoinRepository implements CoinRepository {
                 .fetchOneInto(Integer.class);
     }
 
+    @Override
+    public Assets getCurrencyStatsBySymbol(String symbol) {
+        List<Assets.Currency> currencyList = dsl.select(
+                        Tables.CRYPTOCURRENCIES.ID,
+                        Tables.CRYPTOCURRENCIES.NAME,
+                        Tables.CRYPTOCURRENCIES.SYMBOL,
+                        Tables.CRYPTOCURRENCIES.RANK,
+                        Tables.MARKET_DATA.TIMESTAMP,
+                        Tables.MARKET_DATA.PRICE.as("priceUSD"),
+                        Tables.MARKET_DATA.SUPPLY,
+                        Tables.MARKET_DATA.MAX_SUPPLY,
+                        Tables.MARKET_DATA.VOLUME_USD.as("volumeUsd24Hr"),
+                        Tables.MARKET_DATA.MARKET_CAP.as("marketCapUsd")
+                ).from(Tables.CRYPTOCURRENCIES)
+                .join(Tables.MARKET_DATA)
+                .on(Tables.CRYPTOCURRENCIES.ID.eq(Tables.MARKET_DATA.CRYPTO_ID))
+                .where(Tables.CRYPTOCURRENCIES.SYMBOL.eq(symbol))
+                .orderBy(Tables.MARKET_DATA.TIMESTAMP.desc())
+                .limit(1000)
+                .fetchInto(Assets.Currency.class);
+        return new Assets(currencyList);
+    }
+
     private Integer findCurrencyIDBySymbol(String symbol) {
         return dsl.select(Tables.CRYPTOCURRENCIES.ID)
                 .from(Tables.CRYPTOCURRENCIES)

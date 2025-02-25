@@ -11,9 +11,9 @@ public interface UserRepository {
 
     void updateUser(UserDTO user);
 
-    void deleteUserById(Long id);
+    void deleteUserById(Long telegramId);
 
-    UserDTO findUserById(Long id);
+    UserDTO findUserById(Long telegramId);
 
     Boolean subscribeUser(SubscriptionDTO subscriptionDTO);
 
