@@ -1,5 +1,6 @@
 package org.coinpet.petcoin.repository;
 
+import org.flywaydb.core.Flyway;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -12,8 +13,8 @@ public abstract class IntegrationTest {
     static {
         POSTGRES = new PostgreSQLContainer<>("postgres:15").withDatabaseName("PetCoin").withUsername("admin")
                 .withPassword("admin");
-        POSTGRES.withInitScript("init.sql");
         POSTGRES.start();
+        runMigrations();
     }
 
     @DynamicPropertySource
@@ -21,5 +22,12 @@ public abstract class IntegrationTest {
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
+    }
+
+    public static void runMigrations() {
+        Flyway.configure()
+                .dataSource(POSTGRES.getJdbcUrl(), POSTGRES.getUsername(), POSTGRES.getPassword())
+                .load()
+                .migrate();
     }
 }
