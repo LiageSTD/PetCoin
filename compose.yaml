@@ -1,12 +1,12 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:16.3'
     environment:
       - 'POSTGRES_DB=PetCoin'
       - 'POSTGRES_PASSWORD=admin'
       - 'POSTGRES_USER=admin'
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgresql:/var/lib/postgresql/data
     ports:
       - '5432:5432'
