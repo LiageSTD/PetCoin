@@ -1,0 +1,11 @@
+package org.coinPet.bot.service.commandsHandler;
+
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+public class CommandsHandlerService {
+    public SendMessage handleMessage(Update update) {
+        return null;
+    }
+
+}

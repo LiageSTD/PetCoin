@@ -1,0 +1,6 @@
+app:
+    telegram-bot-token: ${TELEGRAM_BOT_API_KEY}
+    telegram-bot-name: Tinkoff_HW_BOT
+spring:
+  application:
+    name: bot

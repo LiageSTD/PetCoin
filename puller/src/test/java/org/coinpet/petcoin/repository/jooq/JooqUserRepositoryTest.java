@@ -2,10 +2,10 @@ package org.coinpet.petcoin.repository.jooq;
 
 import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
-import org.coinpet.petcoin.repository.IntegrationTest;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
 import org.coinpet.petcoin.crypto.repository.dto.SubscriptionDTO;
 import org.coinpet.petcoin.crypto.repository.dto.UserDTO;
+import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +29,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
     static UserDTO testUser1_2 = new UserDTO((long) 123123, "testName2", "testEmail2");
     static UserDTO testUser2 = new UserDTO((long) 123124, "testName2", "testEmail2");
     static UserDTO testUser3 = new UserDTO((long) 123125, "testName3", "testEmail3");
+
     @Test
     @Rollback
     @Transactional
