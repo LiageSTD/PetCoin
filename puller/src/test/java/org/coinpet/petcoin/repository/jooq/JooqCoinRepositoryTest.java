@@ -2,7 +2,7 @@ package org.coinpet.petcoin.repository.jooq;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;

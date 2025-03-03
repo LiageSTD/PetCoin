@@ -1,4 +1,4 @@
-package org.coinpet.petcoin.crypto.repository.dto;
+package org.coinPet.dto.bot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

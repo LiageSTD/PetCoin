@@ -2,8 +2,9 @@ package org.coinpet.petcoin.crypto.service.currencyUpdater;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.clients.CoinCap.CoinCapClient;
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
 package org.coinpet.petcoin.crypto.service.cryptoService;
 
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+
+import org.coinPet.dto.puller.Assets;
 
 public interface Crypto {
     Assets.Currency getCurrencyInfoBySymbol(String symbol);

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
-import org.coinpet.petcoin.crypto.repository.dto.SubscriptionDTO;
-import org.coinpet.petcoin.crypto.repository.dto.UserDTO;
+import org.coinPet.dto.bot.SubscriptionDTO;
+import org.coinPet.dto.bot.UserDTO;
 
 import org.coinpet.petcoin.crypto.repository.jooq.model.public_.Tables;
 import org.jooq.DSLContext;

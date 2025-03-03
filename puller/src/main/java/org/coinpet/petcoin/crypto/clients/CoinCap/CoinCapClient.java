@@ -1,6 +1,6 @@
 package org.coinpet.petcoin.crypto.clients.CoinCap;
 
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;

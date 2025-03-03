@@ -23,6 +23,12 @@
         <database.password>admin</database.password>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.coinPet</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <!--        Migrations    -->
         <!-- https://mvnrepository.com/artifact/in.hocg.boot/flyway-spring-boot-starter -->
         <dependency>

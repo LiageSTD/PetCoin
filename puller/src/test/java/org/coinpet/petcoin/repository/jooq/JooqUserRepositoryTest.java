@@ -1,10 +1,10 @@
 package org.coinpet.petcoin.repository.jooq;
 
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
-import org.coinpet.petcoin.crypto.repository.dto.SubscriptionDTO;
-import org.coinpet.petcoin.crypto.repository.dto.UserDTO;
+import org.coinPet.dto.bot.SubscriptionDTO;
+import org.coinPet.dto.bot.UserDTO;
 import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

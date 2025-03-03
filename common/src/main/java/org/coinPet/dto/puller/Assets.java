@@ -1,4 +1,4 @@
-package org.coinpet.petcoin.crypto.clients.CoinCap.dto;
+package org.coinPet.dto.puller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

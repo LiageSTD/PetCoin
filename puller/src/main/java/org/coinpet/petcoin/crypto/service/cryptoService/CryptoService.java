@@ -1,7 +1,7 @@
 package org.coinpet.petcoin.crypto.service.cryptoService;
 
 import lombok.RequiredArgsConstructor;
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.springframework.stereotype.Service;
 

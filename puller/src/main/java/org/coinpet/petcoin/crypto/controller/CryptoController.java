@@ -2,7 +2,7 @@ package org.coinpet.petcoin.crypto.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.service.cryptoService.CryptoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -3,8 +3,8 @@ package org.coinpet.petcoin.crypto.service.userService;
 import lombok.RequiredArgsConstructor;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
-import org.coinpet.petcoin.crypto.repository.dto.SubscriptionDTO;
-import org.coinpet.petcoin.crypto.repository.dto.UserDTO;
+import org.coinPet.dto.bot.SubscriptionDTO;
+import org.coinPet.dto.bot.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

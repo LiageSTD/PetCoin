@@ -1,9 +1,8 @@
 package org.coinpet.petcoin.crypto.repository.jooq;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.coinpet.petcoin.crypto.clients.CoinCap.dto.Assets;
+import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.jooq.model.public_.Tables;
 import org.jooq.DSLContext;
