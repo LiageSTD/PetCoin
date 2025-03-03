@@ -9,7 +9,7 @@ import org.springframework.web.service.annotation.PostExchange;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserClient {
     @PostExchange("localhost/user/v1/registration")
     void registerUser(UserDTO user);
 
