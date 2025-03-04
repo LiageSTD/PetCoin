@@ -23,7 +23,7 @@ public class StartHandler implements CommandHandler {
 
     @Override
     public String description() {
-        return "A command to register you in the system";
+        return "A command to register you in the system\nExample: /start";
     }
 
     @Override

@@ -20,7 +20,7 @@ public interface UserClient {
     boolean checkIfUserIsRegistered(@PathVariable long telegram_id);
 
     @PostExchange("/user/v1/subscriptions")
-    void subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO);
+    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO);
 
     @DeleteExchange("/user/v1/subscriptions")
     void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO);

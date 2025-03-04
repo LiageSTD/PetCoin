@@ -19,7 +19,7 @@ public class UnTrackHandler implements CommandHandler {
 
     @Override
     public String description() {
-        return "Use this command to stop tracking coin's value. \n Example: /untrack BTC";
+        return "Use this command to stop tracking coin's value.\nExample: /untrack BTC";
     }
 
     @Override

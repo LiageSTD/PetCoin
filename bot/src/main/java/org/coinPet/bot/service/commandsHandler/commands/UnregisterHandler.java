@@ -1,22 +1,23 @@
 package org.coinPet.bot.service.commandsHandler.commands;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.coinPet.bot.clients.UserClient;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
-@RequiredArgsConstructor
-public class UnRegisterHandler implements CommandHandler {
+@AllArgsConstructor
+public class UnregisterHandler implements CommandHandler {
     UserClient userClient;
     @Override
     public String command() {
-        return "/untrack";
+        return "/unregister";
     }
 
     @Override
     public String description() {
-        return "Use this command to delete your PetCoin account.";
+        return "Use this command to delete your PetCoin account.\nExample: /unregister";
     }
 
     @Override

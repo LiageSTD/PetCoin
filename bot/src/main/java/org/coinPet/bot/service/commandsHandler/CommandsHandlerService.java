@@ -1,6 +1,7 @@
 package org.coinPet.bot.service.commandsHandler;
 
 import lombok.RequiredArgsConstructor;
+import org.coinPet.bot.service.commandsHandler.commands.Command;
 import org.coinPet.bot.service.commandsHandler.commands.CommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommandsHandlerService {
     @Autowired
-    List<CommandHandler> handlers;
+    List<Command> handlers;
     public SendMessage handleMessage(Update update) {
-        for (CommandHandler handler : handlers) {
+        for (Command handler : handlers) {
             if (handler.supports(update)) {
                 return handler.handle(update);
             }

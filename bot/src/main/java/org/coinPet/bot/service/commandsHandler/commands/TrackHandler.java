@@ -24,7 +24,7 @@ public class TrackHandler implements CommandHandler {
 
     @Override
     public String description() {
-        return "Use this command to track coin's value. \n/track <coin symbol> <threshold> <notification type (telegram : default, email)>";
+        return "Use this command to track coin's value.\nExample: /track <coin symbol> <threshold> <notification type (telegram : default, email)>";
     }
 
     @Override
@@ -37,7 +37,6 @@ public class TrackHandler implements CommandHandler {
         String[] input = update.getMessage().getText().trim().split(" ");
 
         if (input.length == 3 || input.length == 4) {
-            reply = new SendMessage(String.valueOf(userTelegramID), "Tracking " + input[1] + " now...");
 
             try {
                 subscriptionDTO.setCurrencySymbol(input[1]);
@@ -51,7 +50,12 @@ public class TrackHandler implements CommandHandler {
                 } else {
                     subscriptionDTO.setNotificationType("telegram");
                 }
-                userClient.subscribeUser(subscriptionDTO);
+                boolean result = userClient.subscribeUser(subscriptionDTO);
+                if (!result) {
+                    reply = new SendMessage(userTelegramID.toString(), "Unable to find this coin");
+                } else {
+                    reply = new SendMessage(userTelegramID.toString(), "You are now tracking " + input[1] + " with threshold " + input[2]);
+                }
                 log.info("User with id: {} is tracking {}", userTelegramID, input[1]);
 
 

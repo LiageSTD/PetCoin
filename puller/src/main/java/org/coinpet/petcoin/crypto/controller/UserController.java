@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/subscriptions")
-    void subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
-        userService.subscribeUser(subscriptionDTO);
+    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
+        return userService.subscribeUser(subscriptionDTO);
     }
 
     @DeleteMapping("/subscriptions")

@@ -26,8 +26,8 @@ public class UserService implements User {
     }
 
     @Override
-    public void subscribeUser(SubscriptionDTO subscriptionDTO) {
-        userRepository.subscribeUser(subscriptionDTO);
+    public boolean subscribeUser(SubscriptionDTO subscriptionDTO) {
+        return userRepository.subscribeUser(subscriptionDTO);
     }
 
     @Override

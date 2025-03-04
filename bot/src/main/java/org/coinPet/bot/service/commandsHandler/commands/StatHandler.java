@@ -1,7 +1,6 @@
 package org.coinPet.bot.service.commandsHandler.commands;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.coinPet.bot.clients.CurrencyClient;
 import org.coinPet.dto.bot.SubscriptionDTO;
 import org.coinPet.dto.puller.Assets;
@@ -19,7 +18,7 @@ public class StatHandler implements CommandHandler {
 
     @Override
     public String description() {
-        return "Use this command to see info about a coin. \n Example: /stat BTC";
+        return "Use this command to see info about a coin.\nExample: /stat BTC";
     }
 
     @Override
@@ -32,7 +31,7 @@ public class StatHandler implements CommandHandler {
         if (input.length == 2) {
             Assets.Currency currencyToDisplay = currencyClient.getCurrency(input[1]);
             if (currencyToDisplay != null) {
-                reply = new SendMessage(String.valueOf(userTelegramID), currencyToDisplay.toString());
+                reply = new SendMessage(String.valueOf(userTelegramID), prettyPrint(currencyToDisplay));
             } else {
                 reply = new SendMessage(String.valueOf(userTelegramID), "Currency not found");
             }
@@ -41,5 +40,12 @@ public class StatHandler implements CommandHandler {
         }
 
         return reply;
+    }
+    private String prettyPrint(Assets.Currency currency) {
+        return "Currency: " + currency.getName() + "\n" +
+            "Symbol: " + currency.getSymbol() + "\n" +
+            "Price: " + currency.getPriceUSD() + "\n" +
+            "Market Cap: " + currency.getMarketCapUsd() + "\n" +
+            "Volume 24H: " + currency.getVolumeUsd24Hr() + "\n";
     }
 }
