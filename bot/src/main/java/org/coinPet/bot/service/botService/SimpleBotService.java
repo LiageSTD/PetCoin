@@ -1,20 +1,22 @@
 package org.coinPet.bot.service.botService;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.coinPet.bot.clients.CurrencyClient;
 import org.coinPet.bot.clients.UserClient;
 import org.coinPet.dto.bot.SubscriptionDTO;
 import org.coinPet.dto.bot.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 public class SimpleBotService implements BotService {
-    CurrencyClient currencyClient;
+
     UserClient userClient;
 
     @Override

@@ -1,5 +1,6 @@
 package org.coinpet.petcoin.crypto.service.userService;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserService implements User {
     UserRepository userRepository;
     CoinRepository coinRepository;

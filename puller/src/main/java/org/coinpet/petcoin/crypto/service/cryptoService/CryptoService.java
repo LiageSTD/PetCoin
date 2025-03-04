@@ -1,12 +1,13 @@
 package org.coinpet.petcoin.crypto.service.cryptoService;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CryptoService implements Crypto {
     CoinRepository coinRepository;
 

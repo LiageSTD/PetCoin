@@ -1,7 +1,7 @@
 package org.coinPet.bot.service;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.coinPet.bot.configuration.ApplicationConfig;
 import org.coinPet.bot.service.commandsHandler.CommandsHandlerService;
 import org.springframework.stereotype.Component;
@@ -10,15 +10,23 @@ import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsume
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.List;
+
 @Component
-@RequiredArgsConstructor
+@Slf4j
 public class TelegramBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
-    CommandsHandlerService commandsHandlerService;
-    ApplicationConfig applicationConfig;
+    final CommandsHandlerService commandsHandlerService;
+    final ApplicationConfig applicationConfig;
+
     TelegramClient telegramClient;
+
+    public TelegramBot(CommandsHandlerService commandsHandlerService, ApplicationConfig applicationConfig) {
+        this.commandsHandlerService = commandsHandlerService;
+        this.applicationConfig = applicationConfig;
+    }
 
     @Override
     public void consume(List<Update> updates) {
@@ -27,7 +35,11 @@ public class TelegramBot implements SpringLongPollingBot, LongPollingSingleThrea
 
     @Override
     public void consume(Update update) {
-        commandsHandlerService.handleMessage(update);
+        try {
+            telegramClient.execute(commandsHandlerService.handleMessage(update));
+        } catch (TelegramApiException e) {
+            log.error("Unable to send message to: {}\n Error: {}", update.getMessage().getChatId(), e.getMessage());
+        }
     }
 
     @Override
@@ -39,8 +51,9 @@ public class TelegramBot implements SpringLongPollingBot, LongPollingSingleThrea
     public LongPollingUpdateConsumer getUpdatesConsumer() {
         return this;
     }
+
     @PostConstruct
     private void initTelegramClient() {
-        telegramClient = new OkHttpTelegramClient(getBotToken());
+        telegramClient = new OkHttpTelegramClient(applicationConfig.getTelegramBotToken());
     }
 }

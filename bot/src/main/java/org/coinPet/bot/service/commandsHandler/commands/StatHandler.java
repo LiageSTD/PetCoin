@@ -1,5 +1,6 @@
 package org.coinPet.bot.service.commandsHandler.commands;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.coinPet.bot.clients.CurrencyClient;
 import org.coinPet.dto.bot.SubscriptionDTO;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
-@RequiredArgsConstructor
-public class StatHandler implements Command {
+@AllArgsConstructor
+public class StatHandler implements CommandHandler {
     CurrencyClient currencyClient;
     @Override
     public String command() {

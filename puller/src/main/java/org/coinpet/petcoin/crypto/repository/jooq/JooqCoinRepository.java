@@ -136,10 +136,10 @@ public class JooqCoinRepository implements CoinRepository {
     }
 
     @Override
-    public Integer getCurrencyIdByName(String name) {
+    public Integer getCurrencyIdBySymbol(String symbol) {
         return dsl.select(Tables.CRYPTOCURRENCIES.ID)
                 .from(Tables.CRYPTOCURRENCIES)
-                .where(Tables.CRYPTOCURRENCIES.NAME.eq(name))
+                .where(Tables.CRYPTOCURRENCIES.SYMBOL.eq(symbol))
                 .fetchOneInto(Integer.class);
     }
 

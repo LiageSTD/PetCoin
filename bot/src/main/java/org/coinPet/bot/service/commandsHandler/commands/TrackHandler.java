@@ -1,6 +1,6 @@
 package org.coinPet.bot.service.commandsHandler.commands;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.coinPet.bot.clients.UserClient;
 import org.coinPet.dto.bot.SubscriptionDTO;
@@ -11,9 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.math.BigDecimal;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
-public class TrackHandler implements Command {
+public class TrackHandler implements CommandHandler {
 
     UserClient userClient;
 
@@ -24,7 +24,7 @@ public class TrackHandler implements Command {
 
     @Override
     public String description() {
-        return "Use this command to track coin's value. \n Example: /track BTC";
+        return "Use this command to track coin's value. \n/track <coin symbol> <threshold> <notification type (telegram : default, email)>";
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TrackHandler implements Command {
             reply = new SendMessage(String.valueOf(userTelegramID), "Tracking " + input[1] + " now...");
 
             try {
-                subscriptionDTO.setCurrencyName(input[1]);
+                subscriptionDTO.setCurrencySymbol(input[1]);
                 subscriptionDTO.setThreshold(BigDecimal.valueOf(Long.parseLong(input[2])));
                 if (input.length == 4) {
                     if (input[3].equals("telegram") || input[3].equals("email")) {
@@ -49,12 +49,11 @@ public class TrackHandler implements Command {
                         reply = new SendMessage(userTelegramID.toString(), "Invalid notification type. Please use telegram or email");
                     }
                 } else {
-                    reply = makeReplyWithInvalidInput(userTelegramID);
                     subscriptionDTO.setNotificationType("telegram");
                 }
+                userClient.subscribeUser(subscriptionDTO);
                 log.info("User with id: {} is tracking {}", userTelegramID, input[1]);
 
-                userClient.subscribeUser(subscriptionDTO);
 
             } catch (NumberFormatException e) {
                 reply = makeReplyWithInvalidInput(userTelegramID);

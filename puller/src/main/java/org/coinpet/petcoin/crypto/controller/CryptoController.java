@@ -1,5 +1,6 @@
 package org.coinpet.petcoin.crypto.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.coinPet.dto.puller.Assets;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping("/crypto/v1")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CryptoController {
     private CryptoService cryptoService;
 

@@ -1,10 +1,10 @@
 package org.coinpet.petcoin.repository.jooq;
 
+import org.coinPet.dto.bot.SubscriptionDTO;
+import org.coinPet.dto.bot.UserDTO;
 import org.coinPet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
 import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
         ));
         SubscriptionDTO subscriptionDTO = new SubscriptionDTO(
                 123123L,
-                "Bitcoin",
+                "BTC",
                 BigDecimal.ONE,
                 "telegram");
         boolean res = userRepository.subscribeUser(subscriptionDTO);
@@ -97,10 +97,57 @@ class JooqUserRepositoryTest extends IntegrationTest {
         List<SubscriptionDTO> subscriptions = userRepository.getUserSubscriptions(subscriptionDTO.getTelegramId());
 
         assertEquals(subscriptionDTO.getTelegramId(), subscriptions.getFirst().getTelegramId());
-        assertEquals(subscriptionDTO.getCurrencyName(), subscriptions.getFirst().getCurrencyName());
+        assertEquals(subscriptionDTO.getCurrencySymbol(), subscriptions.getFirst().getCurrencySymbol());
         assertEquals(BigDecimal.ONE.longValue(), subscriptions.getFirst().getThreshold().longValue());
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    void resubscribe_should_update_threshold() {
+        userRepository.addUser(testUser1);
+        coinRepository.addNewCurrency(new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                0.11f,
+                100.01f,
+                100000.11f,
+                12300123.01f,
+                200f
+        ));
+        SubscriptionDTO firstSubscription = new SubscriptionDTO(
+                123123L,
+                "BTC",
+                BigDecimal.ONE,
+                "telegram"
+        );
+
+        SubscriptionDTO secondSubscription = new SubscriptionDTO(
+                123123L,
+                "BTC",
+                BigDecimal.TEN,
+                "telegram"
+        );
+
+        assertTrue(userRepository.subscribeUser(firstSubscription));
+
+        List<SubscriptionDTO> subscriptions = userRepository.getUserSubscriptions(firstSubscription.getTelegramId());
+
+        assertEquals(firstSubscription.getTelegramId(), subscriptions.getFirst().getTelegramId());
+        assertEquals(firstSubscription.getCurrencySymbol(), subscriptions.getFirst().getCurrencySymbol());
+        assertEquals(BigDecimal.ONE.longValue(), subscriptions.getFirst().getThreshold().longValue());
+
+        assertTrue(userRepository.subscribeUser(secondSubscription));
+        List<SubscriptionDTO> updatedSubscriptions = userRepository.getUserSubscriptions(secondSubscription.getTelegramId());
+
+        assertEquals(1, updatedSubscriptions.size());
+
+        assertEquals(secondSubscription.getTelegramId(), updatedSubscriptions.getFirst().getTelegramId());
+        assertEquals(secondSubscription.getCurrencySymbol(), updatedSubscriptions.getFirst().getCurrencySymbol());
+        assertEquals(BigDecimal.TEN.longValue(), updatedSubscriptions.getFirst().getThreshold().longValue());
+    }
 
     @Test
     @Rollback
@@ -120,7 +167,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
         ));
         SubscriptionDTO subscriptionDTO = new SubscriptionDTO(
                 123123L,
-                "Bitcoin",
+                "BTC",
                 BigDecimal.ONE,
                 "telegram");
 

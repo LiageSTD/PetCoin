@@ -68,7 +68,7 @@ public class JooqUserRepository implements UserRepository {
     @Transactional
     @Override
     public Boolean subscribeUser(SubscriptionDTO subscriptionDTO) {
-            Integer coinID = coinRepository.getCurrencyIdByName(subscriptionDTO.getCurrencyName());
+            Integer coinID = coinRepository.getCurrencyIdBySymbol(subscriptionDTO.getCurrencySymbol());
             Integer userID = getUserIdByTelegramId(subscriptionDTO.getTelegramId());
 
             if (coinID == null || userID == null) {
@@ -80,13 +80,17 @@ public class JooqUserRepository implements UserRepository {
                     .set(Tables.SUBSCRIPTIONS.CRYPTO_ID, coinID)
                     .set(Tables.SUBSCRIPTIONS.THRESHOLD, subscriptionDTO.getThreshold())
                     .set(Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE, subscriptionDTO.getNotificationType())
+                    .onConflict(Tables.SUBSCRIPTIONS.USER_ID, Tables.SUBSCRIPTIONS.CRYPTO_ID)
+                    .doUpdate()
+                    .set(Tables.SUBSCRIPTIONS.THRESHOLD, subscriptionDTO.getThreshold())
                     .execute();
+            ;
             return true;
     }
 
     @Override
     public void unsubscribeUser(SubscriptionDTO subscriptionDTO) {
-        Integer coinID = coinRepository.getCurrencyIdByName(subscriptionDTO.getCurrencyName());
+        Integer coinID = coinRepository.getCurrencyIdBySymbol(subscriptionDTO.getCurrencySymbol());
         Integer userID = getUserIdByTelegramId(subscriptionDTO.getTelegramId());
         if (coinID == null || userID == null) {
             log.error("JooqUserRepository: unsubscribeUser: coinID is null or userID is null");
@@ -103,7 +107,7 @@ public class JooqUserRepository implements UserRepository {
         Integer userID = getUserIdByTelegramId(id);
         return dsl.select(
                         Tables.USERS.TELEGRAM_ID.as("telegramId"),
-                        Tables.CRYPTOCURRENCIES.NAME.as("currencyName"),
+                        Tables.CRYPTOCURRENCIES.SYMBOL.as("currencySymbol"),
                         Tables.SUBSCRIPTIONS.THRESHOLD,
                         Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE
                 )

@@ -1,5 +1,6 @@
 package org.coinpet.petcoin.crypto.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.coinpet.petcoin.crypto.service.userService.UserService;
 import org.coinPet.dto.bot.SubscriptionDTO;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/v1")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserController {
     UserService userService;
 
