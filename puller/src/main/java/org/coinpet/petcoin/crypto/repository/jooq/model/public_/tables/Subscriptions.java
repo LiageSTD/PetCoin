@@ -89,6 +89,11 @@ public class Subscriptions extends TableImpl<SubscriptionsRecord> {
      */
     public final TableField<SubscriptionsRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>public.subscriptions.price_at_subscription</code>.
+     */
+    public final TableField<SubscriptionsRecord, BigDecimal> PRICE_AT_SUBSCRIPTION = createField(DSL.name("price_at_subscription"), SQLDataType.NUMERIC(20, 8), this, "");
+
     private Subscriptions(Name alias, Table<SubscriptionsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

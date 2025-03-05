@@ -1,10 +1,9 @@
 package org.coinpet.petcoin.crypto.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.coinpet.petcoin.crypto.service.userService.UserService;
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.SubscriptionDTO;
+import org.coinpet.dto.bot.UserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
 package org.coinpet.petcoin.crypto.service.userService;
 
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.SubscriptionDTO;
+import org.coinpet.dto.bot.UserDTO;
 
 import java.util.List;
 

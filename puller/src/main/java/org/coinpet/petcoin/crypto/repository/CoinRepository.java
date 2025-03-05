@@ -1,7 +1,7 @@
 package org.coinpet.petcoin.crypto.repository;
 
 
-import org.coinPet.dto.puller.Assets;
+import org.coinpet.dto.puller.Assets;
 
 public interface CoinRepository {
 

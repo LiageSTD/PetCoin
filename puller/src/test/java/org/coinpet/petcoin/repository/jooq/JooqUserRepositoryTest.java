@@ -1,8 +1,8 @@
 package org.coinpet.petcoin.repository.jooq;
 
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
-import org.coinPet.dto.puller.Assets;
+import org.coinpet.dto.bot.SubscriptionDTO;
+import org.coinpet.dto.bot.UserDTO;
+import org.coinpet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
 import org.coinpet.petcoin.repository.IntegrationTest;

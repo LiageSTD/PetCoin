@@ -104,6 +104,20 @@ public class SubscriptionsRecord extends UpdatableRecordImpl<SubscriptionsRecord
         return (LocalDateTime) get(5);
     }
 
+    /**
+     * Setter for <code>public.subscriptions.price_at_subscription</code>.
+     */
+    public void setPriceAtSubscription(BigDecimal value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>public.subscriptions.price_at_subscription</code>.
+     */
+    public BigDecimal getPriceAtSubscription() {
+        return (BigDecimal) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -127,7 +141,7 @@ public class SubscriptionsRecord extends UpdatableRecordImpl<SubscriptionsRecord
     /**
      * Create a detached, initialised SubscriptionsRecord
      */
-    public SubscriptionsRecord(Integer id, Integer userId, Integer cryptoId, BigDecimal threshold, String notificationType, LocalDateTime createdAt) {
+    public SubscriptionsRecord(Integer id, Integer userId, Integer cryptoId, BigDecimal threshold, String notificationType, LocalDateTime createdAt, BigDecimal priceAtSubscription) {
         super(Subscriptions.SUBSCRIPTIONS);
 
         setId(id);
@@ -136,6 +150,7 @@ public class SubscriptionsRecord extends UpdatableRecordImpl<SubscriptionsRecord
         setThreshold(threshold);
         setNotificationType(notificationType);
         setCreatedAt(createdAt);
+        setPriceAtSubscription(priceAtSubscription);
         resetChangedOnNotNull();
     }
 }

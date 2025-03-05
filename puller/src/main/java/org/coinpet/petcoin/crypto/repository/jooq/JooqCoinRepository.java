@@ -2,7 +2,7 @@ package org.coinpet.petcoin.crypto.repository.jooq;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.coinPet.dto.puller.Assets;
+import org.coinpet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.jooq.model.public_.Tables;
 import org.jooq.DSLContext;

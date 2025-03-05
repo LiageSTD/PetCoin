@@ -1,7 +1,8 @@
 package org.coinpet.petcoin.crypto.repository;
 
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.SubscriptionDTO;
+import org.coinpet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.UserNotificationDTO;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface UserRepository {
     List<UserDTO> getAllUsers();
 
     Integer getUserIdByTelegramId(Long telegramId);
+
+    List<UserNotificationDTO> getUsersToNotify();
 }

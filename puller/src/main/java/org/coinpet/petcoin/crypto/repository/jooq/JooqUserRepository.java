@@ -2,10 +2,11 @@ package org.coinpet.petcoin.crypto.repository.jooq;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.coinpet.dto.bot.UserNotificationDTO;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
-import org.coinPet.dto.bot.SubscriptionDTO;
-import org.coinPet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.SubscriptionDTO;
+import org.coinpet.dto.bot.UserDTO;
 
 import org.coinpet.petcoin.crypto.repository.jooq.model.public_.Tables;
 import org.jooq.DSLContext;
@@ -137,5 +138,10 @@ public class JooqUserRepository implements UserRepository {
                 .from(Tables.USERS)
                 .where(Tables.USERS.TELEGRAM_ID.eq(telegramId))
                 .fetchOneInto(Integer.class);
+    }
+
+    @Override
+    public List<UserNotificationDTO> getUsersToNotify() {
+        return null;
     }
 }

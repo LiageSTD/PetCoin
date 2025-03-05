@@ -6,23 +6,17 @@
     <parent>
         <groupId>org.coinPet</groupId>
         <artifactId>PetCoin</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>bot</artifactId>
-
+    <version>${revision}</version>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.coinPet</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-springboot-longpolling-starter</artifactId>
@@ -32,6 +26,12 @@
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-client</artifactId>
             <version>8.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.coinPet</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

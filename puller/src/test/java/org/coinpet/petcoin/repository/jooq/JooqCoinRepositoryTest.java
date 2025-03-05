@@ -2,7 +2,7 @@ package org.coinpet.petcoin.repository.jooq;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.coinPet.dto.puller.Assets;
+import org.coinpet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.repository.IntegrationTest;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestPropertySource(properties = "app.scheduler.enabled=false")
 @Slf4j
-class JooqCoinRepositoryTest extends IntegrationTest {
+public class JooqCoinRepositoryTest extends IntegrationTest {
     @Autowired
     CoinRepository coinRepository;
 
