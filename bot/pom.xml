@@ -18,15 +18,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots-springboot-longpolling-starter -->
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-springboot-longpolling-starter</artifactId>
-            <version>8.0.0</version>
+            <version>8.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+
         </dependency>
+
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-client</artifactId>
-            <version>8.0.0</version>
+            <version>8.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.coinPet</groupId>

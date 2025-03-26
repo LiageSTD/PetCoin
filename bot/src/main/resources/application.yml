@@ -1,5 +1,5 @@
 app:
-    telegram-bot-token: ${TELEGRAM_BOT_API_KEY}
+    telegram-bot-token: NONE
     telegram-bot-name: Tinkoff_HW_BOT
 spring:
   application:
