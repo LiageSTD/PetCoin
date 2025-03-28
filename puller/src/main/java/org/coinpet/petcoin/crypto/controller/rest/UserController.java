@@ -1,4 +1,4 @@
-package org.coinpet.petcoin.crypto.controller;
+package org.coinpet.petcoin.crypto.controller.rest;
 
 import lombok.AllArgsConstructor;
 import org.coinpet.petcoin.crypto.service.userService.UserService;
@@ -31,15 +31,15 @@ public class UserController {
         return userService.findUserById(telegram_id);
     }
 
-    @PostMapping("/subscriptions")
-    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
-        return userService.subscribeUser(subscriptionDTO);
-    }
-
-    @DeleteMapping("/subscriptions")
-    void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
-        userService.unsubscribeUser(subscriptionDTO);
-    }
+//    @PostMapping("/subscriptions")
+//    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
+//        return userService.subscribeUser(subscriptionDTO);
+//    }
+//
+//    @DeleteMapping("/subscriptions")
+//    void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
+//        userService.unsubscribeUser(subscriptionDTO);
+//    }
 
     @GetMapping("/subscriptions/{telegram_id}")
     List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id) {

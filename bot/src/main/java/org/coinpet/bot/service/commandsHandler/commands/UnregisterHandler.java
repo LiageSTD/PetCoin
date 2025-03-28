@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
 @AllArgsConstructor
 public class UnregisterHandler implements CommandHandler {
-    UserClient userClient;
+    UserClient botService;
     @Override
     public String command() {
         return "/unregister";
@@ -25,7 +25,7 @@ public class UnregisterHandler implements CommandHandler {
         if (text.length != 1) {
             return new SendMessage(String.valueOf(update.getMessage().getChatId()), "Invalid input. Example: /unregister");
         }
-        userClient.unregisterUser(update.getMessage().getChat().getId());
+        botService.unregisterUser(update.getMessage().getChat().getId());
 
         return new SendMessage(String.valueOf(update.getMessage().getChatId()), "Your account has been deleted.");
     }

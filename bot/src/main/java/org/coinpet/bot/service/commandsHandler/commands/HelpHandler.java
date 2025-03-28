@@ -1,6 +1,7 @@
 package org.coinpet.bot.service.commandsHandler.commands;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -9,8 +10,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class HelpHanlder implements Command {
-    List<CommandHandler> availableCommands;
+public class HelpHandler implements Command {
+    private final List<CommandHandler> availableCommands;
+
     @Override
     public String command() {
         return "/help";
@@ -30,7 +32,7 @@ public class HelpHanlder implements Command {
         }
         return new SendMessage(
                 update.getMessage().getChat().getId().toString(),
-                    replyText.toString()
-                );
+                replyText.toString()
+        );
     }
 }

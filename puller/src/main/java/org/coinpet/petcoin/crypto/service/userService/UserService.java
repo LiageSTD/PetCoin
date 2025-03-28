@@ -1,18 +1,18 @@
 package org.coinpet.petcoin.crypto.service.userService;
 
 import lombok.AllArgsConstructor;
-import org.coinpet.petcoin.crypto.repository.CoinRepository;
-import org.coinpet.petcoin.crypto.repository.UserRepository;
+import org.coinpet.dto.bot.IsToSubscribe;
 import org.coinpet.dto.bot.SubscriptionDTO;
 import org.coinpet.dto.bot.UserDTO;
+import org.coinpet.petcoin.crypto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UserService implements User {
     UserRepository userRepository;
-    CoinRepository coinRepository;
 
     @Override
     public void addUser(UserDTO user) {
@@ -25,10 +25,15 @@ public class UserService implements User {
     }
 
     @Override
-    public boolean subscribeUser(SubscriptionDTO subscriptionDTO) {
-        return userRepository.subscribeUser(subscriptionDTO);
+    public boolean consumeSubscription(SubscriptionDTO subscriptionDTO) {
+        if (subscriptionDTO.getIsToSubscribe().equals(IsToSubscribe.toSubscribe)) {
+            return userRepository.subscribeUser(subscriptionDTO);
+        } else {
+            userRepository.unsubscribeUser(subscriptionDTO);
+            return true;
+        }
     }
-
+    //TODO: Delete this method
     @Override
     public void unsubscribeUser(SubscriptionDTO subscriptionDTO) {
         userRepository.unsubscribeUser(subscriptionDTO);

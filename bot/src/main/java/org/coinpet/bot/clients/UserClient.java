@@ -16,14 +16,8 @@ public interface UserClient {
     @DeleteExchange("/user/v1/registration/{telegram_id}")
     void unregisterUser(@PathVariable long telegram_id);
 
-    @GetExchange("/user/v1/registration/{telegram_id}")
-    boolean checkIfUserIsRegistered(@PathVariable long telegram_id);
-
-    @PostExchange("/user/v1/subscriptions")
-    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO);
-
-    @DeleteExchange("/user/v1/subscriptions")
-    void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO);
+    @GetExchange("/user/v1/registration/{user_telegram_id}")
+    boolean checkIfUserIsRegistered(@PathVariable Long user_telegram_id);
 
     @GetExchange("/user/v1/subscriptions/{telegram_id}")
     List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id);

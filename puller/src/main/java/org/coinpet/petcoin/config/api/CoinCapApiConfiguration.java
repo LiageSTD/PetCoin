@@ -1,4 +1,4 @@
-package org.coinpet.petcoin.config.apiConfiguration;
+package org.coinpet.petcoin.config.api;
 
 import org.springframework.http.MediaType;
 

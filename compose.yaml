@@ -6,9 +6,32 @@ services:
       - 'POSTGRES_PASSWORD=admin'
       - 'POSTGRES_USER=admin'
     volumes:
-#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      #      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgresql:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    hostname: zookeeper
+  kafka:
+    image: wurstmeister/kafka
+    command: [ start-kafka.sh ]
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_CREATE_TOPICS: "user-subscriptions:1:1,user-notify:1:1" # topic:partition:replicas
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - "zookeeper"
 volumes:
   postgresql:

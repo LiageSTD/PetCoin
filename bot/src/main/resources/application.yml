@@ -1,8 +1,18 @@
 app:
     telegram-bot-token: ${TELEGRAM_BOT_API_KEY}
-    telegram-bot-name: Tinkoff_HW_BOT
+    telegram-bot-name: PetCoin_BOT
 spring:
   application:
     name: bot
+  kafka:
+    consumer:
+      group-id: puller
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
     port: 8090

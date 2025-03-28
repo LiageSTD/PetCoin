@@ -17,5 +17,7 @@ public class SubscriptionDTO implements Serializable {
 
     BigDecimal threshold;
 
-    String notificationType;
+    NotificationType notificationType;
+
+    IsToSubscribe isToSubscribe;
 }

@@ -2,19 +2,23 @@ package org.coinpet.petcoin.crypto.service.notificationService;
 
 import lombok.AllArgsConstructor;
 import org.coinpet.dto.bot.UserNotificationDTO;
+import org.coinpet.petcoin.crypto.clients.bot.BotClient;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class NotifierService implements Notifier{
+@EnableScheduling
+public class NotifierService implements Notifier {
     UserRepository userService;
-    CoinRepository coinRepository;
+    KafkaNotificationProducer kafkaNotificationSender;
     @Override
-    public List<UserNotificationDTO> getAllUsersToNotify() {
-        return null;
+    public void getAllUsersToNotify() {
+        List<UserNotificationDTO> usersToNotify =  userService.getUsersToNotify();
+        kafkaNotificationSender.sendMessages(usersToNotify);
     }
 }

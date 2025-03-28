@@ -3,8 +3,10 @@ package org.coinpet.petcoin.crypto.clients;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.coinpet.petcoin.config.ApplicationConfig;
-import org.coinpet.petcoin.config.apiConfiguration.CoinCapApiConfiguration;
-import org.coinpet.petcoin.crypto.clients.CoinCap.CoinCapClient;
+import org.coinpet.petcoin.config.api.BotClientApiConfiguration;
+import org.coinpet.petcoin.config.api.CoinCapApiConfiguration;
+import org.coinpet.petcoin.crypto.clients.bot.BotClient;
+import org.coinpet.petcoin.crypto.clients.coincap.CoinCapClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -37,10 +39,21 @@ public class ProxyFactory {
         return clientFactory.createClient(CoinCapClient.class);
     }
 
+    private BotClient BotClient(String botClientUrl) {
+        HttpServiceProxyFactory clientFactory =
+                HttpServiceProxyFactory.builderFor(WebClientAdapter.create(makeClient(
+                        botClientUrl,
+                        BotClientApiConfiguration.JSON_CONTENT_TYPE,
+                        BotClientApiConfiguration.API_VERSION
+                ))).build();
+        return clientFactory.createClient(BotClient.class);
+    }
+
     @Bean
     public CoinCapClient CoinCapClient() {
         return CoinCapClient(CoinCapApiConfiguration.API_VERSION);
     }
-
+    @Bean
+    public BotClient BotClient() {return BotClient(BotClientApiConfiguration.API_VERSION);}
 
 }

@@ -1,4 +1,4 @@
-package org.coinpet.petcoin.crypto.controller;
+package org.coinpet.petcoin.crypto.controller.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,12 @@ public class CryptoController {
     private CryptoService cryptoService;
 
     @GetMapping("/currency/{symbol}")
-    Assets.Currency getCurrencyInfo(@PathVariable String symbol) {
+    public Assets.Currency getCurrencyInfo(@PathVariable String symbol) {
         return cryptoService.getCurrencyInfoBySymbol(symbol);
     }
 
     @GetMapping("/currency/stats/{symbol}")
-    Assets getCurrencyStats(@PathVariable String symbol) {
+    public Assets getCurrencyStats(@PathVariable String symbol) {
         return cryptoService.getCurrencyStatsBySymbol(symbol);
     }
 }

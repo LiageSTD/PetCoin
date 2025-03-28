@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class UserNotificationDTO implements Serializable {
@@ -12,6 +13,8 @@ public class UserNotificationDTO implements Serializable {
     long userTelegramID;
     @NotNull
     String coinNameToNotifyAbout;
-    @NotNull
-    String message;
+
+    BigDecimal currentValue;
+
+    NotificationType notificationType;
 }

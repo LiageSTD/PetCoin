@@ -1,16 +1,20 @@
 package org.coinpet.bot.service.commandsHandler.commands;
 
 import lombok.AllArgsConstructor;
-import org.coinpet.bot.clients.CurrencyClient;
+import lombok.RequiredArgsConstructor;
+import org.coinpet.bot.service.currencyService.SimpleCurrencyService;
 import org.coinpet.dto.bot.SubscriptionDTO;
 import org.coinpet.dto.puller.Assets;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 @Service
 @AllArgsConstructor
 public class StatHandler implements CommandHandler {
-    CurrencyClient currencyClient;
+
+    private final SimpleCurrencyService currencyClient;
+
     @Override
     public String command() {
         return "/stat";
@@ -29,7 +33,7 @@ public class StatHandler implements CommandHandler {
 
         String[] input = update.getMessage().getText().trim().split(" ");
         if (input.length == 2) {
-            Assets.Currency currencyToDisplay = currencyClient.getCurrency(input[1]);
+            Assets.Currency currencyToDisplay = currencyClient.getInfoAboutCurrency(input[1]);
             if (currencyToDisplay != null) {
                 reply = new SendMessage(String.valueOf(userTelegramID), prettyPrint(currencyToDisplay));
             } else {
@@ -41,11 +45,12 @@ public class StatHandler implements CommandHandler {
 
         return reply;
     }
+
     private String prettyPrint(Assets.Currency currency) {
         return "Currency: " + currency.getName() + "\n" +
-            "Symbol: " + currency.getSymbol() + "\n" +
-            "Price: " + currency.getPriceUSD() + "\n" +
-            "Market Cap: " + currency.getMarketCapUsd() + "\n" +
-            "Volume 24H: " + currency.getVolumeUsd24Hr() + "\n";
+                "Symbol: " + currency.getSymbol() + "\n" +
+                "Price: " + currency.getPriceUSD() + "\n" +
+                "Market Cap: " + currency.getMarketCapUsd() + "\n" +
+                "Volume 24H: " + currency.getVolumeUsd24Hr() + "\n";
     }
 }

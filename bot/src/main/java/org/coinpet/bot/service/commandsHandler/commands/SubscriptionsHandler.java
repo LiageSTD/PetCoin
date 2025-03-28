@@ -12,7 +12,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class SubscriptionsHandler implements CommandHandler {
-    UserClient userClient;
+    private final UserClient botService;
+
     @Override
     public String command() {
         return "/subscriptions";
@@ -26,7 +27,7 @@ public class SubscriptionsHandler implements CommandHandler {
     @Override
     public SendMessage handle(Update update) {
         Long userTelegramID = update.getMessage().getChat().getId();
-        List<SubscriptionDTO> subscriptions = userClient.getUserSubscriptions(userTelegramID);
+        List<SubscriptionDTO> subscriptions = botService.getUserSubscriptions(userTelegramID);
         return new SendMessage(String.valueOf(userTelegramID), subscriptions.isEmpty() ? "Nothing to show" : subscriptions.toString());
     }
 }

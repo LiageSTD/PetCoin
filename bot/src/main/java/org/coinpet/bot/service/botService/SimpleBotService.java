@@ -1,20 +1,25 @@
 package org.coinpet.bot.service.botService;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.coinpet.bot.clients.UserClient;
+import org.coinpet.bot.service.subscriptionService.KafkaSubscriptionProducer;
+import org.coinpet.bot.service.telegramBot.TelegramBot;
 import org.coinpet.dto.bot.SubscriptionDTO;
 import org.coinpet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.UserNotificationDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class SimpleBotService implements BotService {
 
-    UserClient userClient;
+    private final UserClient userClient;
+
+    private final TelegramBot telegramBot;
+
+    private final KafkaSubscriptionProducer subscriptionService;
 
     @Override
     public void registerUser(UserDTO userDTO) {
@@ -22,7 +27,7 @@ public class SimpleBotService implements BotService {
     }
 
     @Override
-    public void unregisterChat(Long telegramID) {
+    public void unregisterUser(Long telegramID) {
         userClient.unregisterUser(telegramID);
     }
 
@@ -33,16 +38,21 @@ public class SimpleBotService implements BotService {
 
     @Override
     public void subscribeToCurrency(SubscriptionDTO subscriptionDTO) {
-        userClient.subscribeUser(subscriptionDTO);
+        subscriptionService.send(subscriptionDTO);
     }
 
     @Override
     public void unsubscribeFromCurrency(SubscriptionDTO subscriptionDTO) {
-        userClient.unSubscribeUser(subscriptionDTO);
+        subscriptionService.send(subscriptionDTO);
     }
 
     @Override
     public List<SubscriptionDTO> getSubscriptions(Long telegramID) {
         return userClient.getUserSubscriptions(telegramID);
+    }
+
+    @Override
+    public void notifyUser(UserNotificationDTO userNotificationDTO) {
+        telegramBot.notifyUser(userNotificationDTO);
     }
 }

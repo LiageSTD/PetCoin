@@ -10,7 +10,7 @@ public interface User {
 
     void deleteUser(Long telegramId);
 
-    boolean subscribeUser(SubscriptionDTO subscriptionDTO);
+    boolean consumeSubscription(SubscriptionDTO subscriptionDTO);
 
     void unsubscribeUser(SubscriptionDTO subscriptionDTO);
 

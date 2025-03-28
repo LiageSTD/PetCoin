@@ -1,8 +1,9 @@
 package org.coinpet.bot.service.commandsHandler.commands;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.coinpet.bot.clients.UserClient;
+import org.coinpet.bot.service.subscriptionService.KafkaSubscriptionProducer;
+import org.coinpet.dto.bot.IsToSubscribe;
+import org.coinpet.dto.bot.NotificationType;
 import org.coinpet.dto.bot.SubscriptionDTO;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,10 +13,9 @@ import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class TrackHandler implements CommandHandler {
-
-    UserClient userClient;
+    KafkaSubscriptionProducer subscriptionProducer;
+//    SimpleBotService ;
 
     @Override
     public String command() {
@@ -41,22 +41,20 @@ public class TrackHandler implements CommandHandler {
             try {
                 subscriptionDTO.setCurrencySymbol(input[1]);
                 subscriptionDTO.setThreshold(BigDecimal.valueOf(Long.parseLong(input[2])));
+                subscriptionDTO.setIsToSubscribe(IsToSubscribe.toSubscribe);
                 if (input.length == 4) {
                     if (input[3].equals("telegram") || input[3].equals("email")) {
-                        subscriptionDTO.setNotificationType(input[3]);
+                        subscriptionDTO.setNotificationType(input[3].equals("telegram") ? NotificationType.telegram : NotificationType.email);
                     } else {
                         reply = new SendMessage(userTelegramID.toString(), "Invalid notification type. Please use telegram or email");
                     }
                 } else {
-                    subscriptionDTO.setNotificationType("telegram");
+                    subscriptionDTO.setNotificationType(NotificationType.telegram);
                 }
-                boolean result = userClient.subscribeUser(subscriptionDTO);
-                if (!result) {
-                    reply = new SendMessage(userTelegramID.toString(), "Unable to find this coin");
-                } else {
-                    reply = new SendMessage(userTelegramID.toString(), "You are now tracking " + input[1] + " with threshold " + input[2]);
-                }
-                log.info("User with id: {} is tracking {}", userTelegramID, input[1]);
+                subscriptionProducer.send(subscriptionDTO);
+//                botService.subscribeToCurrency(subscriptionDTO);
+                reply = new SendMessage(userTelegramID.toString(), "You are now tracking " + input[1] + " with threshold " + input[2]);
+//                log.info("User with id: {} is tracking {}", userTelegramID, input[1]);
 
 
             } catch (NumberFormatException e) {

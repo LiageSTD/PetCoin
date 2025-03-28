@@ -1,7 +1,6 @@
 package org.coinpet.petcoin.repository.jooq;
 
-import org.coinpet.dto.bot.SubscriptionDTO;
-import org.coinpet.dto.bot.UserDTO;
+import org.coinpet.dto.bot.*;
 import org.coinpet.dto.puller.Assets;
 import org.coinpet.petcoin.crypto.repository.CoinRepository;
 import org.coinpet.petcoin.crypto.repository.UserRepository;
@@ -14,6 +13,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +75,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void subscribeUserTest() {
+    void consumeSubscriptionTest() {
         userRepository.addUser(testUser1);
         coinRepository.addNewCurrency(new Assets.Currency(
                 "1",
@@ -91,7 +92,8 @@ class JooqUserRepositoryTest extends IntegrationTest {
                 123123L,
                 "BTC",
                 BigDecimal.ONE,
-                "telegram");
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe);
         boolean res = userRepository.subscribeUser(subscriptionDTO);
         assertTrue(res);
         List<SubscriptionDTO> subscriptions = userRepository.getUserSubscriptions(subscriptionDTO.getTelegramId());
@@ -121,14 +123,16 @@ class JooqUserRepositoryTest extends IntegrationTest {
                 123123L,
                 "BTC",
                 BigDecimal.ONE,
-                "telegram"
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe
         );
 
         SubscriptionDTO secondSubscription = new SubscriptionDTO(
                 123123L,
                 "BTC",
                 BigDecimal.TEN,
-                "telegram"
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe
         );
 
         assertTrue(userRepository.subscribeUser(firstSubscription));
@@ -169,7 +173,8 @@ class JooqUserRepositoryTest extends IntegrationTest {
                 123123L,
                 "BTC",
                 BigDecimal.ONE,
-                "telegram");
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe);
 
         assertTrue(userRepository.subscribeUser(subscriptionDTO));
 
@@ -198,5 +203,88 @@ class JooqUserRepositoryTest extends IntegrationTest {
         assertTrue(users.contains(testUser1));
         assertTrue(users.contains(testUser2));
         assertTrue(users.contains(testUser3));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    void should_return_users_to_notify() {
+        List<UserDTO> userDTOList = new ArrayList<>(
+                Arrays.asList(
+                        testUser1,
+                        testUser2
+                )
+        );
+
+        for (UserDTO user : userDTOList) {
+            userRepository.addUser(user);
+
+        }
+        coinRepository.addNewCurrency(new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                0.11f,
+                100.01f,
+                100000.11f,
+                12300123.01f,
+                200f
+        ));
+        coinRepository.addNewCurrency(new Assets.Currency(
+                "2",
+                2,
+                "ETH",
+                "Ethereum",
+                0.22f,
+                111.01f,
+                1012300.11f,
+                1230123322.01f,
+                100f
+        ));
+
+        userRepository.subscribeUser(new SubscriptionDTO(
+                testUser1.getTelegramId(),
+                "BTC",
+                BigDecimal.valueOf(10L),
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe
+                ));
+        userRepository.subscribeUser(new SubscriptionDTO(
+                testUser2.getTelegramId(),
+                "ETH",
+                BigDecimal.valueOf(100L),
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe
+        ));
+
+        coinRepository.updateCurrency(new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                0.11f,
+                100.01f,
+                100000.11f,
+                12300123.01f,
+                210f
+        ));
+        coinRepository.updateCurrency(new Assets.Currency(
+                "2",
+                2,
+                "ETH",
+                "Ethereum",
+                0.22f,
+                111.01f,
+                1012300.11f,
+                1230123322.01f,
+                500f
+        ));
+
+        List<UserNotificationDTO> usersToNotify = userRepository.getUsersToNotify();
+        usersToNotify.sort((left, right) -> left.getUserTelegramID() > right.getUserTelegramID() ? 1 : -1);
+        for (int i = 0; i < usersToNotify.size(); i++) {
+            assertEquals(userDTOList.get(i).getTelegramId(), usersToNotify.get(i).getUserTelegramID());
+        }
     }
 }

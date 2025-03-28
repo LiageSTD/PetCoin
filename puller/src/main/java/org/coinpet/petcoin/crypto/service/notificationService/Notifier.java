@@ -5,5 +5,5 @@ import org.coinpet.dto.bot.UserNotificationDTO;
 import java.util.List;
 
 public interface Notifier {
-    List<UserNotificationDTO> getAllUsersToNotify();
+    void getAllUsersToNotify();
 }

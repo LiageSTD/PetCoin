@@ -12,7 +12,9 @@ import org.coinpet.petcoin.crypto.repository.jooq.model.public_.Tables;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import static org.jooq.impl.DSL.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -76,17 +78,34 @@ public class JooqUserRepository implements UserRepository {
                 log.error("JooqUserRepository: subscribeUser: coinID or userID is null");
                 return false;
             }
+
+            BigDecimal coinPrice = getCoinPriceByID(coinID);
+
+            if (coinPrice == null) {
+                log.error("JooqUserRepository: subscribeUser: Unable to define coinPrice (coinPrice == null)");
+            }
+
             dsl.insertInto(Tables.SUBSCRIPTIONS)
                     .set(Tables.SUBSCRIPTIONS.USER_ID, userID)
                     .set(Tables.SUBSCRIPTIONS.CRYPTO_ID, coinID)
                     .set(Tables.SUBSCRIPTIONS.THRESHOLD, subscriptionDTO.getThreshold())
-                    .set(Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE, subscriptionDTO.getNotificationType())
+                    .set(Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE, subscriptionDTO.getNotificationType().name())
+                    .set(Tables.SUBSCRIPTIONS.PRICE_AT_SUBSCRIPTION, coinPrice)
                     .onConflict(Tables.SUBSCRIPTIONS.USER_ID, Tables.SUBSCRIPTIONS.CRYPTO_ID)
                     .doUpdate()
                     .set(Tables.SUBSCRIPTIONS.THRESHOLD, subscriptionDTO.getThreshold())
                     .execute();
             ;
             return true;
+    }
+
+    private BigDecimal getCoinPriceByID(Integer coinID) {
+        return dsl.select(Tables.MARKET_DATA.PRICE)
+                .from(Tables.MARKET_DATA)
+                .where(Tables.MARKET_DATA.CRYPTO_ID.eq(coinID))
+                .orderBy(Tables.MARKET_DATA.PRICE)
+                .limit(1)
+                .fetchOneInto(BigDecimal.class);
     }
 
     @Override
@@ -142,6 +161,45 @@ public class JooqUserRepository implements UserRepository {
 
     @Override
     public List<UserNotificationDTO> getUsersToNotify() {
-        return null;
+        var latestTimestamps = dsl.select(
+                        Tables.MARKET_DATA.CRYPTO_ID,
+                        max(Tables.MARKET_DATA.TIMESTAMP).as("max_ts")
+                )
+                .from(Tables.MARKET_DATA)
+                .groupBy(Tables.MARKET_DATA.CRYPTO_ID)
+                .asTable("latestTimestamps");
+
+        var latestPrices = dsl.select(
+                        Tables.MARKET_DATA.CRYPTO_ID,
+                        Tables.MARKET_DATA.PRICE
+                )
+                .from(Tables.MARKET_DATA)
+                .join(latestTimestamps)
+                .on(Tables.MARKET_DATA.CRYPTO_ID.eq(latestTimestamps.field("crypto_id", Integer.class))
+                        .and(Tables.MARKET_DATA.TIMESTAMP.eq(latestTimestamps.field("max_ts").cast(LocalDateTime.class))))
+                .asTable("latestPrices");
+
+        return dsl.select(
+                        Tables.USERS.TELEGRAM_ID.as("userTelegramID"),
+                        Tables.CRYPTOCURRENCIES.NAME.as("coinNameToNotifyAbout"),
+                        latestPrices.field("price", BigDecimal.class).as("currentValue"),
+                        Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE.as("notificationType")
+                )
+                .from(Tables.SUBSCRIPTIONS)
+                .join(Tables.USERS)
+                .on(Tables.SUBSCRIPTIONS.USER_ID.eq(Tables.USERS.ID))
+                .join(Tables.CRYPTOCURRENCIES)
+                .on(Tables.SUBSCRIPTIONS.CRYPTO_ID.eq(Tables.CRYPTOCURRENCIES.ID))
+                .join(latestPrices)
+                .on(Tables.CRYPTOCURRENCIES.ID.eq(latestPrices.field("crypto_id", Integer.class)))
+                .where(
+                        abs(
+                                latestPrices.field("price", BigDecimal.class)
+                                        .subtract(Tables.SUBSCRIPTIONS.PRICE_AT_SUBSCRIPTION)
+                        ).ge(Tables.SUBSCRIPTIONS.THRESHOLD)
+                )
+                .fetchInto(UserNotificationDTO.class);
     }
+
+
 }
