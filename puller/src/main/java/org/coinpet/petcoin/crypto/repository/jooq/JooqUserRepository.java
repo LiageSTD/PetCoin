@@ -144,7 +144,7 @@ public class JooqUserRepository implements UserRepository {
     public List<UserDTO> getAllUsers() {
         return dsl.select(
                         Tables.USERS.TELEGRAM_ID,
-                        Tables.USERS.USERNAME,
+                        Tables.USERS.USERNAME.as("name"),
                         Tables.USERS.EMAIL
                 )
                 .from(Tables.USERS)

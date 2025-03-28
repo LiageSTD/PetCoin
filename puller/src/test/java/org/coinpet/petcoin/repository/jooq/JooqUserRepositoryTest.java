@@ -156,7 +156,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void unsubscribeUserTest() {
+    void should_unsubscribe_user() {
         userRepository.addUser(testUser1);
         coinRepository.addNewCurrency(new Assets.Currency(
                 "1",
@@ -192,7 +192,7 @@ class JooqUserRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     @Transactional
-    void getAllUsersTest() {
+    void should_return_all_users_correctly() {
         userRepository.addUser(testUser1);
         userRepository.addUser(testUser2);
         userRepository.addUser(testUser3);
