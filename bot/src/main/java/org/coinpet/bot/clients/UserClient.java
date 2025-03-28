@@ -14,11 +14,11 @@ public interface UserClient {
     void registerUser(@RequestBody UserDTO user);
 
     @DeleteExchange("/user/v1/registration/{telegram_id}")
-    void unregisterUser(@PathVariable long telegram_id);
+    void unregisterUser(@PathVariable("telegram_id") long telegram_id);
 
     @GetExchange("/user/v1/registration/{user_telegram_id}")
-    boolean checkIfUserIsRegistered(@PathVariable Long user_telegram_id);
+    boolean checkIfUserIsRegistered(@PathVariable("user_telegram_id") Long user_telegram_id);
 
     @GetExchange("/user/v1/subscriptions/{telegram_id}")
-    List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id);
+    List<SubscriptionDTO> getUserSubscriptions(@PathVariable("telegram_id") long telegram_id);
 }

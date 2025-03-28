@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class KafkaUserSubscriptionConsumer {
     private final UserService userService;
 
-    @KafkaListener(topics="user-subscriptions")
+    @KafkaListener(topics="user-subscriptions", groupId = "puller", containerFactory = "kafkaUserUnsubscribeListenerContainerFactory")
     public void consumeUserSubscription(SubscriptionDTO subscriptionDTO) {
         userService.consumeSubscription(subscriptionDTO);
     }

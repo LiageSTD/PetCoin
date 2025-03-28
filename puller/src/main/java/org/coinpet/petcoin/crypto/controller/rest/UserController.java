@@ -22,27 +22,17 @@ public class UserController {
     }
 
     @DeleteMapping("/registration/{telegram_id}")
-    void unregisterUser(@PathVariable long telegram_id) {
+    void unregisterUser(@PathVariable("telegram_id") long telegram_id) {
         userService.deleteUser(telegram_id);
     }
 
     @GetMapping("/registration/{telegram_id}")
-    boolean checkIfUserIsRegistered(@PathVariable long telegram_id) {
+    boolean checkIfUserIsRegistered(@PathVariable("telegram_id") long telegram_id) {
         return userService.findUserById(telegram_id);
     }
 
-//    @PostMapping("/subscriptions")
-//    boolean subscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
-//        return userService.subscribeUser(subscriptionDTO);
-//    }
-//
-//    @DeleteMapping("/subscriptions")
-//    void unSubscribeUser(@RequestBody SubscriptionDTO subscriptionDTO) {
-//        userService.unsubscribeUser(subscriptionDTO);
-//    }
-
     @GetMapping("/subscriptions/{telegram_id}")
-    List<SubscriptionDTO> getUserSubscriptions(@PathVariable long telegram_id) {
+    List<SubscriptionDTO> getUserSubscriptions(@PathVariable("telegram_id") long telegram_id) {
         return userService.getUserSubscriptions(telegram_id);
     }
 }

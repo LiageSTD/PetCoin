@@ -17,12 +17,12 @@ public class CryptoController {
     private CryptoService cryptoService;
 
     @GetMapping("/currency/{symbol}")
-    public Assets.Currency getCurrencyInfo(@PathVariable String symbol) {
+    public Assets.Currency getCurrencyInfo(@PathVariable("symbol") String symbol) {
         return cryptoService.getCurrencyInfoBySymbol(symbol);
     }
 
     @GetMapping("/currency/stats/{symbol}")
-    public Assets getCurrencyStats(@PathVariable String symbol) {
+    public Assets getCurrencyStats(@PathVariable("symbol") String symbol) {
         return cryptoService.getCurrencyStatsBySymbol(symbol);
     }
 }

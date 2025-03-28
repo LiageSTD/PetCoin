@@ -18,10 +18,14 @@ public class ApplicationConfig {
     private Integer webClientMaxInMemorySize;
     private Scheduler scheduler;
     private Boolean schedulerEnabled;
-
+    private Kconfig kconfig;
     @Bean
     private Scheduler scheduler() {
         return scheduler;
+    }
+    @Bean
+    private Kconfig kconfig() {
+        return kconfig;
     }
 
     public Duration getUpdateInterval() {
@@ -30,5 +34,7 @@ public class ApplicationConfig {
 
     public record Scheduler(boolean enabled, @NotNull Duration interval) {
     }
+
+    public record Kconfig(String url, String group){}
 }
 

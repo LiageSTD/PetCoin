@@ -1,12 +1,14 @@
 package org.coinpet.dto.bot;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserDTO implements Serializable {
     Long telegramId;
 
