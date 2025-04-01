@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 public class UserNotificationDTO implements Serializable {
     @NotEmpty
     long userTelegramID;
+    // Actually it's a coin symbol. Sorry :)
+    // TODO: Change property name to coin symbol
     @NotNull
     String coinNameToNotifyAbout;
 

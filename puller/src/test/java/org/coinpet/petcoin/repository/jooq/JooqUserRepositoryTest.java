@@ -287,4 +287,49 @@ class JooqUserRepositoryTest extends IntegrationTest {
             assertEquals(userDTOList.get(i).getTelegramId(), usersToNotify.get(i).getUserTelegramID());
         }
     }
+    @Test
+    @Rollback
+    @Transactional
+    void should_change_user_notification_request_after_notification() {
+        userRepository.addUser(testUser1);
+        coinRepository.addNewCurrency(new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                0.11f,
+                100.01f,
+                100000.11f,
+                12300123.01f,
+                200f
+        ));
+        userRepository.subscribeUser(new SubscriptionDTO(
+                testUser1.getTelegramId(),
+                "BTC",
+                BigDecimal.valueOf(10L),
+                NotificationType.telegram,
+                IsToSubscribe.toSubscribe
+        ));
+
+        coinRepository.updateCurrency(new Assets.Currency(
+                "1",
+                1,
+                "BTC",
+                "Bitcoin",
+                0.11f,
+                100.01f,
+                100000.11f,
+                12300123.01f,
+                210f
+        ));
+
+        List<UserNotificationDTO> usersToNotify = userRepository.getUsersToNotify();
+        assertEquals(1, usersToNotify.size());
+        userRepository.updateUserNotificationRequest(usersToNotify.get(0));
+        usersToNotify = userRepository.getUsersToNotify();
+        assertEquals(0, usersToNotify.size());
+        List<SubscriptionDTO> userSubscriptions = userRepository.getUserSubscriptions(testUser1.getTelegramId());
+        assertEquals(1, userSubscriptions.size());
+    }
+
 }

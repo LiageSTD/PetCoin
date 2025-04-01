@@ -27,4 +27,6 @@ public interface UserRepository {
     Integer getUserIdByTelegramId(Long telegramId);
 
     List<UserNotificationDTO> getUsersToNotify();
+
+    void updateUserNotificationRequest(UserNotificationDTO userNotificationDTO);
 }

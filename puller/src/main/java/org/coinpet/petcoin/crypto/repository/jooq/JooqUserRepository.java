@@ -181,7 +181,7 @@ public class JooqUserRepository implements UserRepository {
 
         return dsl.select(
                         Tables.USERS.TELEGRAM_ID.as("userTelegramID"),
-                        Tables.CRYPTOCURRENCIES.NAME.as("coinNameToNotifyAbout"),
+                        Tables.CRYPTOCURRENCIES.SYMBOL.as("coinNameToNotifyAbout"),
                         latestPrices.field("price", BigDecimal.class).as("currentValue"),
                         Tables.SUBSCRIPTIONS.NOTIFICATION_TYPE.as("notificationType")
                 )
@@ -199,6 +199,21 @@ public class JooqUserRepository implements UserRepository {
                         ).ge(Tables.SUBSCRIPTIONS.THRESHOLD)
                 )
                 .fetchInto(UserNotificationDTO.class);
+    }
+
+    @Override
+    public void updateUserNotificationRequest(UserNotificationDTO userNotificationDTO) {
+        Integer userID = getUserIdByTelegramId(userNotificationDTO.getUserTelegramID());
+        Integer coinID = coinRepository.getCurrencyIdBySymbol(userNotificationDTO.getCoinNameToNotifyAbout());
+        if (userID == null || coinID == null) {
+            log.error("JooqUserRepository: updateUserNotificationRequest: userID or coinID is null");
+            return;
+        }
+        dsl.update(Tables.SUBSCRIPTIONS)
+                .set(Tables.SUBSCRIPTIONS.PRICE_AT_SUBSCRIPTION, userNotificationDTO.getCurrentValue())
+                .where(Tables.SUBSCRIPTIONS.USER_ID.eq(userID))
+                .and(Tables.SUBSCRIPTIONS.CRYPTO_ID.eq(coinID))
+                .execute();
     }
 
 
