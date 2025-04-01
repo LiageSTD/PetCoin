@@ -1,6 +1,9 @@
 app:
     telegram-bot-token: ${TELEGRAM_BOT_API_KEY}
     telegram-bot-name: PetCoin_BOT
+    kafka:
+      group-id: puller
+      bootstrap-servers: localhost:9092
 spring:
   application:
     name: bot

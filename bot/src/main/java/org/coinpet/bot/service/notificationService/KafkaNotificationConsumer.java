@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class KafkaNotificationConsumer {
     private final BotService botService;
 
-    @KafkaListener(topics="user-notify")
+    @KafkaListener(topics="user-notify", containerFactory = "kafkaUserNotificationListenerContainerFactory")
     public void consumeNotification(UserNotificationDTO notification) {
         botService.notifyUser(notification);
     }

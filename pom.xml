@@ -33,6 +33,7 @@
         <junit.platform.version>1.11.0</junit.platform.version>
         <revision>0.0.1</revision>
         <spring-boot-revision>3.4.2</spring-boot-revision>
+        <wiremock.version>3.12.1</wiremock.version>
     </properties>
     <dependencies>
         <!--            Kafka -->
@@ -41,12 +42,11 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>3.3.2</version>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.slf4j</groupId>-->
-<!--                    <artifactId>slf4j-api</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>${wiremock.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging -->
         <dependency>

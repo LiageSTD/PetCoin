@@ -29,7 +29,7 @@ public class ProxyFactory {
                 .build();
     }
 
-    private CoinCapClient CoinCapClient(String coinCapUrl) {
+    public CoinCapClient CoinCapClient(String coinCapUrl) {
         HttpServiceProxyFactory clientFactory =
                 HttpServiceProxyFactory.builderFor(WebClientAdapter.create(makeClient(
                         coinCapUrl,
@@ -51,9 +51,9 @@ public class ProxyFactory {
 
     @Bean
     public CoinCapClient CoinCapClient() {
-        return CoinCapClient(CoinCapApiConfiguration.API_VERSION);
+        return CoinCapClient(CoinCapApiConfiguration.API_BASE_URL);
     }
     @Bean
-    public BotClient BotClient() {return BotClient(BotClientApiConfiguration.API_VERSION);}
+    public BotClient BotClient() {return BotClient(BotClientApiConfiguration.API_BASE_URL);}
 
 }
