@@ -29,6 +29,26 @@ public class ProxyFactory {
                 .build();
     }
 
+    // Maybe rework this method
+
+    private static WebClient makeClientForTests(String url, String jsonCT, String apiVer) {
+        return WebClient.builder()
+                .baseUrl(url)
+                .defaultHeader("Content-Type", jsonCT)
+                .defaultHeader("Accept", apiVer)
+                .build();
+    }
+
+    public static CoinCapClient CoinCapClientForTests(String coinCapURL) {
+        HttpServiceProxyFactory clientFactory =
+                HttpServiceProxyFactory.builderFor(WebClientAdapter.create(makeClientForTests(
+                        coinCapURL,
+                        CoinCapApiConfiguration.JSON_CONTENT_TYPE,
+                        CoinCapApiConfiguration.API_VERSION
+                ))).build();
+        return clientFactory.createClient(CoinCapClient.class);
+    }
+
     public CoinCapClient CoinCapClient(String coinCapUrl) {
         HttpServiceProxyFactory clientFactory =
                 HttpServiceProxyFactory.builderFor(WebClientAdapter.create(makeClient(
