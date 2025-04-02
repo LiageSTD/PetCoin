@@ -1,6 +1,7 @@
 package org.coinpet.bot.service.botService;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.coinpet.bot.clients.UserClient;
 import org.coinpet.bot.service.subscriptionService.KafkaSubscriptionProducer;
 import org.coinpet.bot.service.telegramBot.TelegramBot;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SimpleBotService implements BotService {
 
     private final UserClient userClient;

@@ -10,5 +10,4 @@ public interface CurrencyClient {
 
     @GetExchange("/crypto/v1/currency/stats/{symbol}")
     Assets getCurrencyStats(@PathVariable("symbol") String symbol);
-
 }

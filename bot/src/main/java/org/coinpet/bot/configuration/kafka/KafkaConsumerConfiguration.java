@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.coinpet.bot.configuration.ApplicationConfig;
 import org.coinpet.dto.bot.SubscriptionDTO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -15,10 +14,12 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @RequiredArgsConstructor
 @Configuration
 public class KafkaConsumerConfiguration {
     private final ApplicationConfig.Kafka kafkaConfig;
+
     @Bean
     public ConsumerFactory<String, SubscriptionDTO> userNotificationConsumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
