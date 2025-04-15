@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 public class UserNotificationDTO implements Serializable {
@@ -13,6 +16,7 @@ public class UserNotificationDTO implements Serializable {
     long userTelegramID;
     // Actually it's a coin symbol. Sorry :)
     // TODO: Change property name to coin symbol
+    // Just to make a commit
     @NotNull
     String coinNameToNotifyAbout;
 
